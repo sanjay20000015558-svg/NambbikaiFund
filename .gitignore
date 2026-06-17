@@ -1,0 +1,11 @@
+# Project directories
+frontend/
+backend/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
