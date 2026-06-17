@@ -1,0 +1,74 @@
+/* RTL Support Styles */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .MuiSvgIcon-root {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .MuiIconButton-root {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+[dir="rtl"] .MuiListItemIcon-root {
+  margin-right: 0;
+  margin-left: 16px;
+}
+
+[dir="rtl"] .MuiInputAdornment-root {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .MuiInputAdornment-positionStart {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+[dir="rtl"] .MuiInputAdornment-positionEnd {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+/* Flex direction for RTL */
+[dir="rtl"] .MuiBox-root,
+[dir="rtl"] .MuiGrid2-root,
+[dir="rtl"] .MuiStack-root {
+  flex-direction: row-reverse;
+}
+
+/* Margin/padding adjustments for RTL */
+[dir="rtl"] .MuiTypography-root {
+  text-align: right;
+}
+
+[dir="rtl"] .MuiButton-root {
+  margin-left: 8px;
+  margin-right: 0;
+}
+
+[dir="rtl"] .MuiTab-root {
+  margin-left: 8px;
+  margin-right: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+[dir="rtl"] .MuiTableCell-root {
+  text-align: right;
+}
+
+[dir="rtl"] .MuiTableCell-head {
+  text-align: right;
+}
+
+/* For carousel or slider components */
+[dir="rtl"] .swiper-button-next {
+  transform: rotate(180deg);
+}
+
+[dir="rtl"] .swiper-button-prev {
+  transform: rotate(180deg);
+}

@@ -1,0 +1,68 @@
+.chatbot-window {
+  font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+.chatbot-glass {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  margin: 8px 0;
+  font-weight: 600;
+}
+
+.markdown-content p {
+  margin: 8px 0;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.markdown-content li {
+  margin: 4px 0;
+}
+
+.markdown-content code {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.markdown-content pre {
+  background: rgba(0, 0, 0, 0.03);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+
+.markdown-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown-content a {
+  color: #2F7C7B;
+  text-decoration: underline;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid #7FC6CC;
+  padding-left: 12px;
+  margin: 8px 0;
+  opacity: 0.8;
+}
+
+@media (max-width: 600px) {
+  .chatbot-window {
+    border-radius: 0;
+  }
+}
