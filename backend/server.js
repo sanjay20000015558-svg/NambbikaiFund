@@ -169,11 +169,7 @@ process.on('SIGINT', () => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, async () => {
-  await connectDB();
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📱 Environment: ${process.env.NODE_ENV || 'development'}`);
-});
+// Connect to MongoDB
+connectDB();
 
 module.exports = app;
