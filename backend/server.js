@@ -117,12 +117,17 @@ app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/translate', translateRoutes);
 
 // Health check
-app.get('/api/health', (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    message: 'Nambikkai Fund API is running',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Backend Root Working"
+  });
+});
+
+app.get("/api/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "Health Route Working"
   });
 });
 
