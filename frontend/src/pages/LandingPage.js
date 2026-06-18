@@ -206,22 +206,11 @@ return (
                 animate={{ opacity: 1, scale: 1, rotateY: 0 }}
                 transition={{ duration: 0.6, delay: 0.2, ease: 'easeOut' }}
               >
-                <Box
-                  component="img"
-                  src="/images/hero-illustration.svg"
-                  alt="Hope and compassion illustration"
-                  sx={{
-                    width: '100%',
-                    maxWidth: 600,
-                    display: 'block',
-                    mx: 'auto',
-                    filter: 'drop-shadow(0 24px 40px rgba(15, 23, 42, 0.15))',
-                  }}
-                  onError={(e) => {
+                
+                  {(e) => {
                     e.target.onerror = null;
                     e.target.style.display = 'none';
                   }}
-                />
               </motion.div>
             </Grid>
           </Grid>
