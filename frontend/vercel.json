@@ -1,13 +1,10 @@
 {
   "version": 2,
+  "framework": "create-react-app",
   "buildCommand": "npm run build",
   "installCommand": "npm install",
-  "framework": "create-react-app",
   "outputDirectory": "build",
-  "env": {
-    "NODE_ENV": "production"
-  },
-  "redirects": [
+  "rewrites": [
     {
       "source": "/(.*)",
       "destination": "/index.html"
