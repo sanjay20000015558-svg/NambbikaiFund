@@ -78,10 +78,10 @@ const UserProfile = () => {
       };
       const res = await authAPI.updateProfile(submitData);
       dispatch(updateProfileAction(res.data.user));
-      dispatch(showSnackbar({ message: 'Profile updated successfully', severity: 'success' }));
+      dispatch(showSnackbar({ message: t('profile.profileUpdated'), severity: 'success' }));
     } catch (error) {
       dispatch(showSnackbar({
-        message: error.response?.data?.message || 'Failed to update profile',
+        message: error.response?.data?.message || t('profile.profileUpdateFailed'),
         severity: 'error'
       }));
     } finally {
@@ -100,9 +100,9 @@ const UserProfile = () => {
       setLoading(true);
       const res = await authAPI.uploadProfilePicture(formData);
       dispatch(updateProfileAction(res.data.user));
-      dispatch(showSnackbar({ message: 'Profile picture updated', severity: 'success' }));
+      dispatch(showSnackbar({ message: t('profile.profilePictureUpdated'), severity: 'success' }));
     } catch (error) {
-      dispatch(showSnackbar({ message: 'Failed to upload image', severity: 'error' }));
+      dispatch(showSnackbar({ message: t('profile.failedToUploadImage'), severity: 'error' }));
     } finally {
       setLoading(false);
     }
@@ -115,7 +115,7 @@ const UserProfile = () => {
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Typography variant="h3" gutterBottom>
-        My Profile
+        {t('profile.myProfile')}
       </Typography>
 
       <Grid container spacing={4}>
@@ -164,12 +164,12 @@ const UserProfile = () => {
                   <Controller
                     name="fullName"
                     control={control}
-                    rules={{ required: 'Name is required' }}
+                    rules={{ required: t('profile.fullName') + ' is required' }}
                     render={({ field }) => (
                       <TextField
                         {...field}
                         fullWidth
-                        label="Full Name"
+                        label={t('profile.fullName')}
                         error={!!errors.fullName}
                         helperText={errors.fullName?.message}
                       />
@@ -185,9 +185,9 @@ const UserProfile = () => {
                       <TextField
                         {...field}
                         fullWidth
-                        label="Mobile Number"
+                        label={t('profile.mobileNumber')}
                         disabled
-                        helperText="Contact admin to change mobile"
+                        helperText={t('profile.mobileHelp')}
                       />
                     )}
                   />
@@ -201,7 +201,7 @@ const UserProfile = () => {
                       <TextField
                         {...field}
                         fullWidth
-                        label="Email"
+                        label={t('profile.email')}
                         disabled
                       />
                     )}
@@ -216,7 +216,7 @@ const UserProfile = () => {
                       <TextField
                         {...field}
                         fullWidth
-                        label="Date of Birth"
+                        label={t('profile.dateOfBirth')}
                         type="date"
                         InputLabelProps={{ shrink: true }}
                       />
@@ -233,13 +233,13 @@ const UserProfile = () => {
                         {...field}
                         fullWidth
                         select
-                        label="Gender"
+                        label={t('profile.gender')}
                       >
-                        <MenuItem value="">Select</MenuItem>
-                        <MenuItem value="male">Male</MenuItem>
-                        <MenuItem value="female">Female</MenuItem>
-                        <MenuItem value="other">Other</MenuItem>
-                        <MenuItem value="prefer-not-to-say">Prefer not to say</MenuItem>
+                        <MenuItem value="">{t('profile.selectGender')}</MenuItem>
+                        <MenuItem value="male">{t('profile.male')}</MenuItem>
+                        <MenuItem value="female">{t('profile.female')}</MenuItem>
+                        <MenuItem value="other">{t('profile.other')}</MenuItem>
+                        <MenuItem value="prefer-not-to-say">{t('profile.preferNotToSay')}</MenuItem>
                       </TextField>
                     )}
                   />
@@ -253,7 +253,7 @@ const UserProfile = () => {
                       <TextField
                         {...field}
                         fullWidth
-                        label="Address Line"
+                        label={t('profile.addressLine')}
                       />
                     )}
                   />
@@ -267,7 +267,7 @@ const UserProfile = () => {
                       <TextField
                         {...field}
                         fullWidth
-                        label="City"
+                        label={t('profile.city')}
                       />
                     )}
                   />
@@ -281,7 +281,7 @@ const UserProfile = () => {
                       <TextField
                         {...field}
                         fullWidth
-                        label="State"
+                        label={t('profile.state')}
                       />
                     )}
                   />
@@ -295,7 +295,7 @@ const UserProfile = () => {
                     disabled={loading}
                     startIcon={loading ? <CircularProgress size={20} /> : null}
                   >
-                    {loading ? 'Saving...' : 'Save Changes'}
+                    {loading ? t('profile.saving') : t('profile.saveChanges')}
                   </Button>
                 </Grid>
               </Grid>

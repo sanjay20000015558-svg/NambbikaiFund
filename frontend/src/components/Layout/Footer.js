@@ -241,35 +241,35 @@ const Footer = () => {
 
             {/* Trust badges */}
             <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
-               <Stack direction="row" alignItems="center" gap={0.5} sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                 <Security sx={{ fontSize: 18, color: '#7FC6CC' }} />
-                 <Typography variant="caption">{t('footer.sslSecured')}</Typography>
-               </Stack>
-               <Stack direction="row" alignItems="center" gap={0.5} sx={{ color: 'rgba(255,255,255,0.7)' }}>
-                 <VerifiedUser sx={{ fontSize: 18, color: '#7FC6CC' }} />
-                 <Typography variant="caption">Razorpay</Typography>
-               </Stack>
+              <Stack direction="row" alignItems="center" gap={0.5} sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                <Security sx={{ fontSize: 18, color: '#7FC6CC' }} />
+                <Typography variant="caption">{t('footer.sslSecured')}</Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" gap={0.5} sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                <VerifiedUser sx={{ fontSize: 18, color: '#7FC6CC' }} />
+                <Typography variant="caption">{t('footer.razorpay')}</Typography>
+              </Stack>
             </Stack>
 
             {/* Contact info */}
             <Stack spacing={1.5}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                 <Email sx={{ fontSize: 16, color: '#7FC6CC' }} />
-                 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                  support@nambikkai.fund
+                <Email sx={{ fontSize: 16, color: '#7FC6CC' }} />
+                <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                  {t('home.contactEmail')}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                 <Phone sx={{ fontSize: 16, color: '#7FC6CC' }} />
-                 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                  +91 98765 43210
+                <Phone sx={{ fontSize: 16, color: '#7FC6CC' }} />
+                <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                  {t('home.contactPhone')}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                 <LocationOn sx={{ fontSize: 16, color: '#7FC6CC' }} />
-                 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                   {t('footer.location')}
-                 </Typography>
+                <LocationOn sx={{ fontSize: 16, color: '#7FC6CC' }} />
+                <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                  {t('footer.location')}
+                </Typography>
               </Box>
             </Stack>
           </Grid>
@@ -295,14 +295,14 @@ const Footer = () => {
           <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.5)', fontSize: '0.85rem' }}>
             © {currentYear} {t('navbar.brand')}. {t('footer.madeWith')} <FavoriteBorder sx={{ fontSize: 12, color: '#f43f5e', verticalAlign: 'middle' }} /> {t('footer.forHumanity')}
           </Typography>
-<Stack direction="row" spacing={3}>
-             <Link component={RouterLink} to="/terms" sx={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 0.2s', '&:hover': { color: '#7FC6CC' } }}>
-               <Typography variant="body2">{t('footer.terms')}</Typography>
-             </Link>
-             <Link component={RouterLink} to="/privacy" sx={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 0.2s', '&:hover': { color: '#7FC6CC' } }}>
-               <Typography variant="body2">{t('footer.privacy')}</Typography>
-             </Link>
-           </Stack>
+          <Stack direction="row" spacing={3}>
+            <Link component={RouterLink} to="/terms" sx={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 0.2s', '&:hover': { color: '#7FC6CC' } }}>
+              <Typography variant="body2">{t('footer.terms')}</Typography>
+            </Link>
+            <Link component={RouterLink} to="/privacy" sx={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 0.2s', '&:hover': { color: '#7FC6CC' } }}>
+              <Typography variant="body2">{t('footer.privacy')}</Typography>
+            </Link>
+          </Stack>
         </Box>
       </Container>
     </Box>

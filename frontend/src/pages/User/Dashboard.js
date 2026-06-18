@@ -44,12 +44,6 @@ import { setCampaigns } from '../../redux/slices/campaignSlice';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
 import CampaignCard from '../../components/Campaign/CampaignCard';
 
-const tabItems = [
-  { label: 'My Campaigns', icon: <Edit /> },
-  { label: 'Donations Received', icon: <Receipt /> },
-  { label: 'Withdrawals', icon: <AccountBalanceWallet /> }
-];
-
 const Dashboard = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -57,6 +51,13 @@ const Dashboard = () => {
 
   const { user } = useSelector((state) => state.auth);
   const { campaigns } = useSelector((state) => state.campaigns);
+
+  // Get translated tab labels
+  const tabItems = [
+    { label: t('dashboard.myCampaignsTab'), icon: <Edit /> },
+    { label: t('dashboard.donationsReceived'), icon: <Receipt /> },
+    { label: t('dashboard.withdrawalsTab'), icon: <AccountBalanceWallet /> }
+  ];
 
   const [activeTab, setActiveTab] = useState(0);
   const [stats, setStats] = useState({
@@ -115,21 +116,21 @@ const Dashboard = () => {
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
         <Box>
-          <Typography variant="h3" gutterBottom>
-            Welcome, {user?.fullName?.split(' ')[0]}
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Manage your campaigns and track donations
-          </Typography>
+<Typography variant="h3" gutterBottom>
+             {t('dashboard.welcome')}, {user?.fullName?.split(' ')[0]}
+           </Typography>
+           <Typography variant="body1" color="text.secondary">
+             {t('dashboard.manageCampaigns')}
+           </Typography>
         </Box>
-        <Button
-          variant="contained"
-          size="large"
-          startIcon={<Add />}
-          onClick={() => navigate('/start-campaign')}
-        >
-          New Campaign
-        </Button>
+<Button
+           variant="contained"
+           size="large"
+           startIcon={<Add />}
+           onClick={() => navigate('/start-campaign')}
+         >
+           {t('dashboard.newCampaign')}
+         </Button>
       </Box>
 
       {/* Stats cards */}
@@ -140,9 +141,9 @@ const Dashboard = () => {
               <CardContent>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
                   <Box>
-                    <Typography color="textSecondary" gutterBottom variant="body2">
-                      Total Raised
-                    </Typography>
+<Typography color="textSecondary" gutterBottom variant="body2">
+                       {t('dashboard.totalRaised')}
+                     </Typography>
                     <Typography variant="h5">
                       ₹<CountUp end={stats.totalRaised} separator="," duration={1.5} />
                     </Typography>
@@ -160,9 +161,9 @@ const Dashboard = () => {
               <CardContent>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
                   <Box>
-                    <Typography color="textSecondary" gutterBottom variant="body2">
-                      Total Donations
-                    </Typography>
+<Typography color="textSecondary" gutterBottom variant="body2">
+                       {t('dashboard.totalDonations')}
+                     </Typography>
                     <Typography variant="h5">
                       <CountUp end={stats.totalDonations} duration={1.5} />
                     </Typography>
@@ -180,9 +181,9 @@ const Dashboard = () => {
               <CardContent>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
                   <Box>
-                    <Typography color="textSecondary" gutterBottom variant="body2">
-                      Pending Campaigns
-                    </Typography>
+<Typography color="textSecondary" gutterBottom variant="body2">
+                       {t('dashboard.pendingCampaigns')}
+                     </Typography>
                     <Typography variant="h5">
                       {stats.pendingCampaigns}
                     </Typography>
@@ -200,9 +201,9 @@ const Dashboard = () => {
               <CardContent>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
                   <Box>
-                    <Typography color="textSecondary" gutterBottom variant="body2">
-                      Pending Withdrawals
-                    </Typography>
+<Typography color="textSecondary" gutterBottom variant="body2">
+                       {t('dashboard.pendingWithdrawals')}
+                     </Typography>
                     <Typography variant="h5">
                       {stats.pendingWithdrawals}
                     </Typography>
@@ -235,18 +236,18 @@ const Dashboard = () => {
         <Box>
           {myCampaigns.length === 0 ? (
             <Paper sx={{ p: 6, textAlign: 'center' }}>
-              <Typography variant="h6" gutterBottom>
-                You haven't created any campaigns yet
-              </Typography>
-              <Button
-                variant="contained"
-                size="large"
-                startIcon={<Add />}
-                onClick={() => navigate('/start-campaign')}
-                sx={{ mt: 2 }}
-              >
-                Create Your First Campaign
-              </Button>
+<Typography variant="h6" gutterBottom>
+                 {t('dashboard.noCampaignsYet')}
+               </Typography>
+               <Button
+                 variant="contained"
+                 size="large"
+                 startIcon={<Add />}
+                 onClick={() => navigate('/start-campaign')}
+                 sx={{ mt: 2 }}
+               >
+                 {t('dashboard.createFirstCampaign')}
+               </Button>
             </Paper>
           ) : (
             <Grid container spacing={4}>
@@ -263,9 +264,9 @@ const Dashboard = () => {
       {activeTab === 1 && (
         <Paper sx={{ p: 3, textAlign: 'center' }}>
           <Receipt sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
-          <Typography variant="h6">No donations to show</Typography>
+          <Typography variant="h6">{t('dashboard.noDonations')}</Typography>
           <Typography color="text.secondary">
-            Your donation history will appear here
+            {t('dashboard.donationHistory')}
           </Typography>
         </Paper>
       )}
@@ -277,7 +278,7 @@ const Dashboard = () => {
               <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                 <Typography variant="h6">{campaign.title}</Typography>
                 <Chip
-                  label={`₹${campaign.availableBalance.toLocaleString('en-IN')} available`}
+                  label={`₹${campaign.availableBalance.toLocaleString('en-IN')} ${t('dashboard.availableBalance')}`}
                   color="success"
                 />
               </Box>
@@ -307,7 +308,7 @@ const Dashboard = () => {
                   ))}
                 </List>
               ) : (
-                <Typography color="text.secondary">No withdrawal requests yet</Typography>
+                <Typography color="text.secondary">{t('dashboard.noWithdrawalRequests')}</Typography>
               )}
 
               <Button
@@ -315,7 +316,7 @@ const Dashboard = () => {
                 sx={{ mt: 2 }}
                 onClick={() => navigate(`/campaign/${campaign._id}/withdraw`)}
               >
-                Request Withdrawal
+                {t('dashboard.requestWithdrawal')}
               </Button>
             </Paper>
           ))}

@@ -7,16 +7,20 @@ const supportedLanguages = [
   'en', 'hi', 'ta', 'te', 'ml', 'kn', 'bn', 'mr', 'gu', 'pa', 'ur'
 ];
 
-// Load translations from the root path (works with Vercel static hosting)
-// In production, translations are served from the frontend build
-// In development, they're loaded from localhost:3000/locales
-const getBackendUrl = () => {
-  if (process.env.NODE_ENV === 'production') {
-    // Use frontend origin for production (static files in build)
-    return '';
+// Load English resources synchronously as fallback
+const enResources = {
+  translation: {
+    "welcome": "Welcome to Nambikkai Fund",
+    "slogan": "Give Hope, Save Lives",
+    "donate": "Donate",
+    "loading": "Loading...",
+    "login": "Login",
+    "register": "Register",
+    "navbar": {
+      "brand": "Nambikkai Fund",
+      "tagline": "Hope for Every Patient"
+    }
   }
-  // Use relative path for development
-  return '';
 };
 
 i18n
@@ -40,6 +44,9 @@ i18n
 
     backend: {
       loadPath: '/locales/{{lng}}/translation.json',
+      requestOptions: {
+        cache: 'no-store',
+      },
     },
 
     react: {
@@ -49,7 +56,15 @@ i18n
 
     ns: ['translation'],
     defaultNS: 'translation',
+
+    // Return the key itself as fallback if translation not found
+    returnNull: false,
+    returnEmptyString: false,
+    returnKeyPrefix: false,
   });
+
+// Load English fallback immediately for SSR/SSG compatibility
+i18n.addResourceBundle('en', 'translation', enResources.translation, true, true);
 
 export const changeLanguage = (lng) => {
   return i18n.changeLanguage(lng);
