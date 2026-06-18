@@ -145,14 +145,14 @@ app.use(errorHandler);
 // MongoDB connection
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/nambikkai_fund';
-    await mongoose.connect(mongoURI, {
-      // mongoose 6.x+ no longer needs useNewUrlParser/useUnifiedTopology
-    });
-    console.log('✅ MongoDB connected successfully');
-  } catch (error) {
-    console.error('❌ MongoDB connection error:', error.message);
-    process.exit(1);
+    await mongoose.connect(process.env.MONGODB_URI);
+
+    console.log("✅ MongoDB Connected");
+  } catch (err) {
+    console.error("❌ MongoDB Error:", err.message);
+
+    // Don't stop the Vercel function
+    // process.exit(1);
   }
 };
 
