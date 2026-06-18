@@ -7,6 +7,14 @@ const supportedLanguages = [
   'en', 'hi', 'ta', 'te', 'ml', 'kn', 'bn', 'mr', 'gu', 'pa', 'ur'
 ];
 
+// Get backend URL for loading translations
+const getBackendUrl = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return process.env.REACT_APP_API_URL?.replace('/api', '') || '';
+  }
+  return '';
+};
+
 i18n
   .use(Backend)
   .use(LanguageDetector)
@@ -27,7 +35,7 @@ i18n
     },
 
     backend: {
-      loadPath: '/locales/{{lng}}/translation.json',
+      loadPath: `${getBackendUrl()}/locales/{{lng}}/translation.json`,
     },
 
     react: {

@@ -57,7 +57,8 @@ const AILogo = () => (
       </linearGradient>
     </defs>
     <circle cx="24" cy="24" r="22" stroke="url(#aiGrad)" strokeWidth="2" fill="none" />
-    <path d="M16 20a4 4 0 0 1 4-4 4 4 0 0 1 4 4 4 4 0 0-4 4 4 0 0-4-4 4 0 0 4 4zM28 28l6 6" stroke="url(#aiGrad)" strokeWidth="2.5" strokeLinecap="round" />
+    <path d="M20 22a4 4 0 1 0 0 0 4 4 0 1 8 0 4-4 4 0 1 8 0" stroke="url(#aiGrad)" strokeWidth="2.5" strokeLinecap="round" />
+    <path d="M28 28l6 6" stroke="url(#aiGrad)" strokeWidth="2.5" strokeLinecap="round" />
     <circle cx="18" cy="20" r="2" fill="url(#aiGrad)" />
     <circle cx="30" cy="20" r="2" fill="url(#aiGrad)" />
   </svg>

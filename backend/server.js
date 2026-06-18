@@ -36,26 +36,33 @@ app.set('trust proxy', 1);
 
 // Security middleware
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https://res.cloudinary.com"],
-      scriptSrc: ["'self'"],
-      connectSrc: ["'self'", "https://api.razorpay.com", "https://api.groq.com"]
-    }
-  }
+  contentSecurityPolicy: false, // Disable CSP for serverless compatibility
 }));
 
 // CORS configuration
 // Support multiple origins (localhost, LAN IP, and production URLs)
 const corsOrigins = process.env.FRONTEND_URL
   ? process.env.FRONTEND_URL.split(',').map(origin => origin.trim())
-  : ['http://localhost:3000', 'http://192.168.1.2:3000'];
+  : ['http://localhost:3000'];
 
+// Also add Vercel preview URLs pattern
 const corsOptions = {
-  origin: corsOrigins,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Allow all vercel.app domains for preview deployments
+    if (origin.includes('.vercel.app') || corsOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    // Check if origin is in allowed list
+    if (corsOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -142,39 +149,28 @@ app.use('*', (req, res) => {
 // Error handling middleware
 app.use(errorHandler);
 
-// MongoDB connection
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    // Check if already connected
+    if (mongoose.connection.readyState >= 1) {
+      return mongoose.connection;
+    }
+    
+    const conn = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      maxPoolSize: 10,
+    });
 
     console.log("✅ MongoDB Connected");
+    return conn;
   } catch (err) {
     console.error("❌ MongoDB Error:", err.message);
-
-    // Don't stop the Vercel function
-    // process.exit(1);
+    throw err;
   }
 };
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
-  mongoose.connection.close(() => {
-    console.log('MongoDB connection closed');
-    process.exit(0);
-  });
-});
-
-process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully');
-  mongoose.connection.close(() => {
-    console.log('MongoDB connection closed');
-    process.exit(0);
-  });
-});
-
-// Start server
-// Connect to MongoDB
+// Connect on module load for serverless
 connectDB();
 
 module.exports = app;
