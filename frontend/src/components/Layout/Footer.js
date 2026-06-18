@@ -12,8 +12,6 @@ import {
 } from '@mui/material';
 import {
   Favorite,
-  Campaign,
-  CheckCircle,
   Security,
   VerifiedUser,
   Email,
@@ -41,7 +39,7 @@ const Footer = () => {
       { label: t('footer.terms'), path: '/terms' },
       { label: t('footer.privacy'), path: '/privacy' },
     ],
-  }
+  };
 
   return (
     <Box
@@ -67,7 +65,7 @@ const Footer = () => {
       <Container maxWidth="lg">
         {/* Main footer grid */}
         <Grid container spacing={{ xs: 4, md: 6 }}>
- {/* Brand column */}
+         {/* Brand column */}
           <Grid item xs={12} md={4}>
             <Box sx={{ mb: { xs: 4, md: 0 } }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
@@ -116,7 +114,7 @@ const Footer = () => {
                 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', lineHeight: 1.7, mb: 3 }}>
                   {t('footer.brandDescription')}
                 </Typography>
-<Stack direction="row" spacing={2}>
+              <Stack direction="row" spacing={2}>
                   <Button
                     variant="contained"
                     size="small"
@@ -256,19 +254,19 @@ const Footer = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Email sx={{ fontSize: 16, color: '#7FC6CC' }} />
                 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                  {t('home.contactEmail')}
+                  support@nambikkai.fund
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <Phone sx={{ fontSize: 16, color: '#7FC6CC' }} />
                 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                  {t('home.contactPhone')}
+                  +91 98765 43210
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                 <LocationOn sx={{ fontSize: 16, color: '#7FC6CC' }} />
                 <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                  {t('footer.location')}
+                  Chennai, Tamil Nadu, India
                 </Typography>
               </Box>
             </Stack>

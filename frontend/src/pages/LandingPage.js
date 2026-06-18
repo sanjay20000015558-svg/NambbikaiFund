@@ -771,30 +771,10 @@ return (
                 </Typography>
               </Stack>
             ))}
-          </Stack>
+</Stack>
         </Container>
       </Box>
-
-{/* CONTACT SECTION */}
-       <Box id="contact" sx={{ py: { xs: 12, md: 16 }, bgcolor: '#EAF7F8' }}>
-         <Container maxWidth="md">
-           <Typography variant="h2" align="center" sx={{ fontWeight: 800, mb: 6 }}>
-             {t('home.contactTitle')}
-           </Typography>
-           <Typography variant="h6" color="text.secondary" align="center" sx={{ mb: 4 }}>
-             {t('home.contactSubtitle')}
-           </Typography>
-           <Box sx={{ textAlign: 'center' }}>
-             <Typography variant="body1" sx={{ mb: 2 }}>
-               Email: {t('home.contactEmail')}
-             </Typography>
-             <Typography variant="body1">
-               Phone: {t('home.contactPhone')}
-             </Typography>
-           </Box>
-         </Container>
-       </Box>
-   </>
+    </>
   );
 };
 
