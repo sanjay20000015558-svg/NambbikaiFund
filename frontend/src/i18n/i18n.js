@@ -7,11 +7,15 @@ const supportedLanguages = [
   'en', 'hi', 'ta', 'te', 'ml', 'kn', 'bn', 'mr', 'gu', 'pa', 'ur'
 ];
 
-// Get backend URL for loading translations
+// Load translations from the root path (works with Vercel static hosting)
+// In production, translations are served from the frontend build
+// In development, they're loaded from localhost:3000/locales
 const getBackendUrl = () => {
   if (process.env.NODE_ENV === 'production') {
-    return process.env.REACT_APP_API_URL?.replace('/api', '') || '';
+    // Use frontend origin for production (static files in build)
+    return '';
   }
+  // Use relative path for development
   return '';
 };
 
@@ -35,7 +39,7 @@ i18n
     },
 
     backend: {
-      loadPath: `${getBackendUrl()}/locales/{{lng}}/translation.json`,
+      loadPath: '/locales/{{lng}}/translation.json',
     },
 
     react: {
