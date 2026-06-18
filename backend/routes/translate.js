@@ -19,6 +19,14 @@ router.post('/translate', async (req, res) => {
       });
     }
 
+    // English is NEVER translated - always use the professional source copy
+    if (targetLanguage === 'en') {
+      return res.status(200).json({
+        success: true,
+        translation: text
+      });
+    }
+
     const translated = await translateText(text, targetLanguage, sourceLanguage || 'en');
 
     res.status(200).json({
@@ -49,6 +57,14 @@ router.post('/translate/batch', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'texts array and targetLanguage are required'
+      });
+    }
+
+    // English is NEVER translated - always use the professional source copy
+    if (targetLanguage === 'en') {
+      return res.status(200).json({
+        success: true,
+        translations: texts.map(text => ({ original: text, translation: text }))
       });
     }
 
@@ -89,6 +105,14 @@ router.post('/translate/object', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'obj and targetLanguage are required'
+      });
+    }
+
+    // English is NEVER translated - always use the professional source copy
+    if (targetLanguage === 'en') {
+      return res.status(200).json({
+        success: true,
+        translation: obj
       });
     }
 

@@ -27,6 +27,11 @@ const initializeTranslationService = () => {
 
 const translateText = async (text, targetLanguage, sourceLanguage = 'en') => {
   if (!text || !targetLanguage) return text;
+  
+  // English is NEVER translated - always use the professional source copy
+  if (targetLanguage === 'en') {
+    return text;
+  }
 
   try {
     if (translateClient) {
@@ -56,6 +61,11 @@ const translateText = async (text, targetLanguage, sourceLanguage = 'en') => {
 };
 
 const translateObject = async (obj, targetLanguage, sourceLanguage = 'en') => {
+  // English is NEVER translated - always use the professional source copy
+  if (targetLanguage === 'en') {
+    return obj;
+  }
+
   const result = {};
   
   for (const [key, value] of Object.entries(obj)) {
@@ -80,6 +90,9 @@ const translateCampaign = async (campaign, targetLanguages) => {
   const sourceLanguage = campaign.originalLanguage || 'en';
 
   for (const lang of targetLanguages) {
+    // English is NEVER translated - always use the professional source copy
+    if (lang === 'en') continue;
+    
     // Skip if translation already exists
     const existing = await CampaignTranslation.findOne({
       campaign: campaign._id,
