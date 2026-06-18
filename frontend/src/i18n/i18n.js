@@ -7,7 +7,7 @@ const supportedLanguages = [
   'en', 'hi', 'ta', 'te', 'ml', 'kn', 'bn', 'mr', 'gu', 'pa', 'ur'
 ];
 
-// Load English resources synchronously as fallback
+// Load English resources as inline fallback
 const enResources = {
   translation: {
     "welcome": "Welcome to Nambikkai Fund",
@@ -19,6 +19,17 @@ const enResources = {
     "navbar": {
       "brand": "Nambikkai Fund",
       "tagline": "Hope for Every Patient"
+    },
+    "navigation": {
+      "home": "Home",
+      "campaigns": "Campaigns",
+      "about": "About",
+      "contact": "Contact",
+      "login": "Login",
+      "register": "Register",
+      "logout": "Logout",
+      "dashboard": "Dashboard",
+      "settings": "Settings"
     }
   }
 };
@@ -31,6 +42,7 @@ i18n
     fallbackLng: 'en',
     supportedLngs: supportedLanguages,
     debug: false,
+    initImmediate: true,
 
     interpolation: {
       escapeValue: false,
@@ -44,9 +56,6 @@ i18n
 
     backend: {
       loadPath: '/locales/{{lng}}/translation.json',
-      requestOptions: {
-        cache: 'no-store',
-      },
     },
 
     react: {
@@ -62,9 +71,6 @@ i18n
     returnEmptyString: false,
     returnKeyPrefix: false,
   });
-
-// Load English fallback immediately for SSR/SSG compatibility
-i18n.addResourceBundle('en', 'translation', enResources.translation, true, true);
 
 export const changeLanguage = (lng) => {
   return i18n.changeLanguage(lng);
