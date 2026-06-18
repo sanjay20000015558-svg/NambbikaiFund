@@ -145,32 +145,40 @@ app.use('*', (req, res) => {
     message: `Route ${req.method} ${req.url} not found`
   });
 });
-
-// Error handling middleware
+// Error handling middleware (must be last)
 app.use(errorHandler);
 
+// MongoDB connection
 const connectDB = async () => {
   try {
-    // Check if already connected
-    if (mongoose.connection.readyState >= 1) {
-      return mongoose.connection;
-    }
-    
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      maxPoolSize: 10,
-    });
+    await mongoose.connect(process.env.MONGODB_URI);
 
     console.log("✅ MongoDB Connected");
-    return conn;
   } catch (err) {
     console.error("❌ MongoDB Error:", err.message);
-    throw err;
+
+    // Never stop Vercel function
   }
 };
 
-// Connect on module load for serverless
+// Graceful shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received");
+  mongoose.connection.close(() => {
+    console.log("MongoDB Closed");
+    process.exit(0);
+  });
+});
+
+process.on("SIGINT", () => {
+  console.log("SIGINT received");
+  mongoose.connection.close(() => {
+    console.log("MongoDB Closed");
+    process.exit(0);
+  });
+});
+
+// Connect MongoDB
 connectDB();
 
 module.exports = app;
