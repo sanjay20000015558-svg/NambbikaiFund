@@ -8,11 +8,7 @@ const asyncHandler = require('../middlewares/asyncHandler');
 // @route   GET /api/campaigns
 // @access  Public
 exports.getCampaigns = asyncHandler(async (req, res) => {
-console.log("========== CREATE CAMPAIGN ==========");
-console.log("REQ.USER =", req.user);
-console.log("REQ.BODY =", req.body);
-console.log("REQ.FILES =", req.files);
-const {
+  const {
      page = 1,
      limit = 12,
      category,
