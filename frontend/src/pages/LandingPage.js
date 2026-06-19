@@ -62,18 +62,17 @@ const LandingPage = () => {
     );
   }
 
-  if (backendError) {
-    return (
-      <Container maxWidth="md" sx={{ py: 6 }}>
-        <Alert severity="error" sx={{ mb: 3 }}>
-          {backendError}
-        </Alert>
-      </Container>
-    );
-  }
-
 return (
     <>
+      {backendError && (
+        <Box sx={{ position: 'absolute', top: 80, left: 0, right: 0, zIndex: 1000 }}>
+          <Container maxWidth="md">
+            <Alert severity="warning" sx={{ mb: 3 }}>
+              {backendError}
+            </Alert>
+          </Container>
+        </Box>
+      )}
       {/* HERO SECTION - Emotional storytelling */}
       <Box
         sx={{
