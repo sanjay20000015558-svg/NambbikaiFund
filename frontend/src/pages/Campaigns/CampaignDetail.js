@@ -6,8 +6,6 @@ import {
   Grid,
   Paper,
   Button,
-  Card,
-  CardContent,
   LinearProgress,
   Avatar,
   Chip,
@@ -70,10 +68,8 @@ const CampaignDetail = () => {
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState(0);
   const [donationDialogOpen, setDonationDialogOpen] = useState(false);
-  const [donationStep, setDonationStep] = useState(0);
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [customAmount, setCustomAmount] = useState('');
-  const [paymentOrder, setPaymentOrder] = useState(null);
   const [processing, setProcessing] = useState(false);
 
   const { isAuthenticated, user } = useSelector((state) => state.auth);
@@ -144,11 +140,9 @@ const CampaignDetail = () => {
       return;
     }
 
-    setDonationStep(1);
-    showLoading(t('payment.processingPayment'));
+    setProcessing(true);
 
     try {
-      // Create payment order
       const res = await donationAPI.createOrder({
         campaignId: campaign._id,
         amount: parseFloat(data.amount),
@@ -157,41 +151,68 @@ const CampaignDetail = () => {
         message: data.message
       });
 
-      setPaymentOrder(res.data.data || res.data);
-      hideLoading();
+      const orderData = res.data.data || res.data;
+      const razorpayKey = process.env.REACT_APP_RAZORPAY_KEY_ID || '';
 
-      // Redirect to Razorpay checkout with amount and donor info
-      const checkoutUrl = `/payment/checkout?orderId=${res.data.data?.orderId || res.data.orderId}&amount=${data.amount}&donorName=${encodeURIComponent(user?.fullName || 'Anonymous')}&donorEmail=${encodeURIComponent(user?.email || '')}`;
-      window.location.href = checkoutUrl;
+      const options = {
+        key: razorpayKey,
+        amount: orderData.amount * 100,
+        currency: 'INR',
+        name: t('navbar.brand'),
+        description: `Donation to ${campaign.title}`,
+        order_id: orderData.orderId,
+        handler: function(response) {
+          handlePaymentSuccess({
+            donationId: orderData.donationId,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature
+          });
+        },
+        prefill: {
+          name: user?.fullName || 'Anonymous Donor',
+          email: user?.email || ''
+        },
+        theme: { color: '#2F7C7B' }
+      };
+
+      if (!window.Razorpay) {
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.onload = () => {
+          const rzp = new window.Razorpay(options);
+          rzp.open();
+        };
+        document.body.appendChild(script);
+      } else {
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+      }
     } catch (error) {
-      hideLoading();
       dispatch(showSnackbar({ message: t('campaign.createPaymentFailed'), severity: 'error' }));
+    } finally {
+      setProcessing(false);
     }
   };
 
   const handlePaymentSuccess = async (data) => {
     try {
       const res = await donationAPI.verifyPayment({
-        ...data,
-        donationId: paymentOrder?.donationId,
-        donorName: user.fullName,
-        donorEmail: user.email
+        razorpay_order_id: data.razorpay_order_id,
+        razorpay_payment_id: data.razorpay_payment_id,
+        razorpay_signature: data.razorpay_signature
       });
 
-      dispatch(addDonation(res.data));
       setDonationDialogOpen(false);
       setDonationStep(0);
       setPaymentOrder(null);
 
-      // Refresh campaign data
       fetchCampaign();
 
       dispatch(showSnackbar({
         message: t('donation.thankYou'),
         severity: 'success'
       }));
-
-      // Send notification to campaign creator (handled by backend)
     } catch (error) {
       dispatch(showSnackbar({
         message: t('payment.verificationFailed'),
@@ -462,117 +483,83 @@ const CampaignDetail = () => {
       {/* Donation Dialog */}
       <Dialog
         open={donationDialogOpen}
-        onClose={() => {
-          setDonationDialogOpen(false);
-          setDonationStep(0);
-        }}
+        onClose={() => setDonationDialogOpen(false)}
         maxWidth="sm"
         fullWidth
       >
-        {donationStep === 0 && (
-          <>
-            <DialogTitle>{t('campaign.makeDonation')}</DialogTitle>
-            <DialogContent>
-              <form onSubmit={donationForm.handleSubmit(handleProceedToPayment)}>
-                {/* Amount selection */}
-                <Typography gutterBottom>{t('donation.selectAmount')}</Typography>
-                <Box display="flex" gap={1} mb={2} flexWrap="wrap">
-                  {presetAmounts.map((amt) => (
-                    <Button
-                      key={amt}
-                      variant={selectedAmount === amt ? 'contained' : 'outlined'}
-                      onClick={() => handleAmountSelect(amt)}
-                    >
-                      ₹{amt.toLocaleString('en-IN')}
-                    </Button>
-                  ))}
+        <>
+          <DialogTitle>{t('campaign.makeDonation')}</DialogTitle>
+          <DialogContent>
+            <form onSubmit={donationForm.handleSubmit(handleProceedToPayment)}>
+              {/* Amount selection */}
+              <Typography gutterBottom>{t('donation.selectAmount')}</Typography>
+              <Box display="flex" gap={1} mb={2} flexWrap="wrap">
+                {presetAmounts.map((amt) => (
+                  <Button
+                    key={amt}
+                    variant={selectedAmount === amt ? 'contained' : 'outlined'}
+                    onClick={() => handleAmountSelect(amt)}
+                  >
+                    ₹{amt.toLocaleString('en-IN')}
+                  </Button>
+                ))}
+                <TextField
+                  label={t('donation.custom')}
+                  type="number"
+                  size="small"
+                  value={customAmount}
+                  onChange={handleCustomAmount}
+                  sx={{ width: 120 }}
+                  inputProps={{ min: 1 }}
+                />
+              </Box>
+
+              {/* Message */}
+              <Controller
+                name="message"
+                control={donationForm.control}
+                render={({ field }) => (
                   <TextField
-                    label={t('donation.custom')}
-                    type="number"
-                    size="small"
-                    value={customAmount}
-                    onChange={handleCustomAmount}
-                    sx={{ width: 120 }}
-                    inputProps={{ min: 1 }}
+                    {...field}
+                    fullWidth
+                    label={t('donation.addMessage')}
+                    multiline
+                    rows={2}
+                    sx={{ mb: 2 }}
                   />
-                </Box>
+                )}
+              />
 
-                {/* Message */}
-                <Controller
-                  name="message"
-                  control={donationForm.control}
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      label={t('donation.addMessage')}
-                      multiline
-                      rows={2}
-                      sx={{ mb: 2 }}
-                    />
-                  )}
-                />
-
-                {/* Options */}
-                <FormControlLabel
-                  control={
-                    <Controller
-                      name="isAnonymous"
-                      control={donationForm.control}
-                      render={({ field }) => (
-                        <Checkbox
-                          checked={field.value}
-                          onChange={(e) => field.onChange(e.target.checked)}
-                        />
-                      )}
-                    />
-                  }
-                  label={t('donation.anonymous')}
-                />
-              </form>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setDonationDialogOpen(false)}>{t('common.close')}</Button>
-              <Button
-                variant="contained"
-                onClick={donationForm.handleSubmit(handleProceedToPayment)}
-              >
-                {t('donation.proceed')}
-              </Button>
+              {/* Options */}
+              <FormControlLabel
+                control={
+                  <Controller
+                    name="isAnonymous"
+                    control={donationForm.control}
+                    render={({ field }) => (
+                      <Checkbox
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                      />
+                    )}
+                  />
+                }
+                label={t('donation.anonymous')}
+              />
+            </form>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setDonationDialogOpen(false)}>{t('common.close')}</Button>
+            <Button
+              variant="contained"
+              onClick={donationForm.handleSubmit(handleProceedToPayment)}
+              disabled={processing}
+            >
+              {processing ? 'Processing...' : t('donation.proceed')}
+</Button>
             </DialogActions>
           </>
-        )}
-
-        {donationStep === 1 && paymentOrder && (
-          <>
-            <DialogTitle>{t('payment.completeDonation')}</DialogTitle>
-            <DialogContent>
-              <Alert severity="info" sx={{ mb: 3 }}>
-                {t('payment.redirectToRazorpay', { amount: paymentOrder.amountInRupees })}
-              </Alert>
-              {/* In a production app, include Razorpay checkout JS here */}
-              <Typography>
-                {t('payment.proceedPrompt', { amount: paymentOrder.amountInRupees, title: campaign.title })}
-              </Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setDonationStep(0)}>{t('common.back')}</Button>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  // For demo, simulate success
-                  handlePaymentSuccess({
-                    donationId: paymentOrder.donationId,
-                    amount: paymentOrder.amountInRupees
-                  });
-                }}
-              >
-                {t('payment.continueRazorpay')}
-              </Button>
-            </DialogActions>
-          </>
-        )}
-      </Dialog>
+        </Dialog>
     </Container>
   );
 };
