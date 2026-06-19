@@ -39,23 +39,9 @@ app.use(helmet({
   contentSecurityPolicy: false, // Disable CSP for serverless compatibility
 }));
 
-// CORS configuration
-// Allow localhost, Vercel preview deployments, and production frontend
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://192.168.1.203:3000',
-  /\.vercel\.app$/,
-];
-
+// CORS configuration - allow all origins
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.some(o => typeof o === 'string' ? o === origin : o.test(origin))) {
-      callback(null, true);
-    } else {
-      callback(null, true); // Allow all origins for flexibility
-    }
-  },
-  credentials: false,
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   optionsSuccessStatus: 200
