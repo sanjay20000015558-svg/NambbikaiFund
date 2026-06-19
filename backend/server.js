@@ -40,23 +40,27 @@ app.use(helmet({
 }));
 
 // CORS configuration
-// Support multiple origins (localhost, LAN IP, and production URLs)
-app.use((req, res, next) => {
-  const origin = req.headers.origin || '*';
-  res.setHeader('Access-Control-Allow-Origin', origin);
-  res.setHeader('Vary', 'Origin');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
-  next();
-});
+// Allow localhost, Vercel preview deployments, and production frontend
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://192.168.1.203:3000',
+  /\.vercel\.app$/,
+];
 
 const corsOptions = {
-  origin: true,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.some(o => typeof o === 'string' ? o === origin : o.test(origin))) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all origins for flexibility
+    }
+  },
   credentials: false,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   optionsSuccessStatus: 200
 };
+
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 

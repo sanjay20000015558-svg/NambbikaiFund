@@ -27,7 +27,6 @@ import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
 
 import { authAPI } from '../../services/authService';
-import { getAxiosErrorMessage } from '../../services/api';
 import { loginSuccess } from '../../redux/slices/authSlice';
 import { showSnackbar } from '../../redux/slices/uiSlice';
 
@@ -84,7 +83,7 @@ const Login = () => {
         const errorMessages = err.response.data.errors.map(e => e.message).join(', ');
         setError(errorMessages);
       } else {
-        setError(getAxiosErrorMessage(err, 'Login failed. Check your credentials.'));
+        setError(err.response?.data?.message || err.response?.data?.error || 'Login failed. Check your credentials.');
       }
     } finally {
       setLoading(false);

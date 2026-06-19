@@ -20,7 +20,6 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import CampaignCard from '../components/Campaign/CampaignCard';
 import { campaignAPI } from '../services/campaignService';
-import { getAxiosErrorMessage } from '../services/api';
 import { formatCurrency } from '../utils/formatCurrency';
 
 const LandingPage = () => {
@@ -43,7 +42,7 @@ const LandingPage = () => {
       setFeaturedCampaigns(res.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
-      setBackendError(getAxiosErrorMessage(error, 'Cannot load campaigns.'));
+      setBackendError('Unable to load campaigns at the moment. Please try again later.');
     } finally {
       setLoading(false);
     }
