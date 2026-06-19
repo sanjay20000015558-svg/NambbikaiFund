@@ -3,7 +3,7 @@ import axios from 'axios';
 // API Base URL
 const RAW_API_URL =
   process.env.REACT_APP_API_URL ||
-  'https://nambbikai-fund-5pzfflwra-sanjay-kumars-projects-6d1d4c33.vercel.app/api';
+  'https://nambbikai-fund-41432ad7r-sanjay-kumars-projects-6d1d4c33.vercel.app/api';
 
 const API_URL = RAW_API_URL.replace(/\/$/, '');
 
