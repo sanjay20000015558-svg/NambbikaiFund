@@ -18,16 +18,7 @@ import {
   ListItemText,
   IconButton,
   Alert,
-  Skeleton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  MenuItem,
-  FormControlLabel,
-  Checkbox,
-  Stack
+  Skeleton
 } from '@mui/material';
 import {
   Favorite,
@@ -41,7 +32,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import CountUp from 'react-countup';
-import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { campaignAPI } from '../../services/campaignService';
@@ -51,37 +41,19 @@ import { addDonation } from '../../redux/slices/donationSlice';
 import { showSnackbar } from '../../redux/slices/uiSlice';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
 import { useLoading } from '../../contexts/LoadingContext';
-import { useNotification } from '../../contexts/NotificationContext';
-
-const presetAmounts = [100, 500, 1000, 5000];
 
 const CampaignDetail = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { showLoading, hideLoading } = useLoading();
-  const { markOneAsRead, markAllAsRead } = useNotification();
+const dispatch = useDispatch();
 
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState(0);
-  const [donationDialogOpen, setDonationDialogOpen] = useState(false);
-  const [selectedAmount, setSelectedAmount] = useState(null);
-  const [customAmount, setCustomAmount] = useState('');
   const [processing, setProcessing] = useState(false);
 
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-
-  const donationForm = useForm({
-    defaultValues: {
-      amount: '',
-      isAnonymous: false,
-      dedicatedTo: '',
-      message: ''
-    }
-  });
 
   useEffect(() => {
     fetchCampaign();
@@ -99,7 +71,7 @@ const CampaignDetail = () => {
     }
   };
 
-  const handleDonateClick = () => {
+  const handleDonateClick = async () => {
     if (!campaign) return;
 
     if (campaign.status !== 'approved') {
@@ -112,43 +84,12 @@ const CampaignDetail = () => {
       return;
     }
 
-    setDonationDialogOpen(true);
-  };
-
-  const handleAmountSelect = (amount) => {
-    setSelectedAmount(amount);
-    donationForm.setValue('amount', amount);
-  };
-
-  const handleCustomAmount = (e) => {
-    const value = e.target.value;
-    setCustomAmount(value);
-    if (value) {
-      setSelectedAmount('custom');
-      donationForm.setValue('amount', parseFloat(value));
-    }
-  };
-
-  const handleProceedToPayment = async (data) => {
-    if (!data.amount) {
-      dispatch(showSnackbar({ message: t('donation.selectAmountError'), severity: 'error' }));
-      return;
-    }
-
-    if (parseFloat(data.amount) < 1) {
-      dispatch(showSnackbar({ message: t('donation.minimumAmount'), severity: 'error' }));
-      return;
-    }
-
     setProcessing(true);
-
     try {
       const res = await donationAPI.createOrder({
         campaignId: campaign._id,
-        amount: parseFloat(data.amount),
-        isAnonymous: data.isAnonymous,
-        dedicatedTo: data.dedicatedTo,
-        message: data.message
+        amount: 1000,
+        isAnonymous: false
       });
 
       const orderData = res.data.data || res.data;
@@ -203,12 +144,7 @@ const CampaignDetail = () => {
         razorpay_signature: data.razorpay_signature
       });
 
-      setDonationDialogOpen(false);
-      setDonationStep(0);
-      setPaymentOrder(null);
-
       fetchCampaign();
-
       dispatch(showSnackbar({
         message: t('donation.thankYou'),
         severity: 'success'
@@ -479,87 +415,6 @@ const CampaignDetail = () => {
           </Paper>
         </Grid>
       </Grid>
-
-      {/* Donation Dialog */}
-      <Dialog
-        open={donationDialogOpen}
-        onClose={() => setDonationDialogOpen(false)}
-        maxWidth="sm"
-        fullWidth
-      >
-        <>
-          <DialogTitle>{t('campaign.makeDonation')}</DialogTitle>
-          <DialogContent>
-            <form onSubmit={donationForm.handleSubmit(handleProceedToPayment)}>
-              {/* Amount selection */}
-              <Typography gutterBottom>{t('donation.selectAmount')}</Typography>
-              <Box display="flex" gap={1} mb={2} flexWrap="wrap">
-                {presetAmounts.map((amt) => (
-                  <Button
-                    key={amt}
-                    variant={selectedAmount === amt ? 'contained' : 'outlined'}
-                    onClick={() => handleAmountSelect(amt)}
-                  >
-                    ₹{amt.toLocaleString('en-IN')}
-                  </Button>
-                ))}
-                <TextField
-                  label={t('donation.custom')}
-                  type="number"
-                  size="small"
-                  value={customAmount}
-                  onChange={handleCustomAmount}
-                  sx={{ width: 120 }}
-                  inputProps={{ min: 1 }}
-                />
-              </Box>
-
-              {/* Message */}
-              <Controller
-                name="message"
-                control={donationForm.control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    fullWidth
-                    label={t('donation.addMessage')}
-                    multiline
-                    rows={2}
-                    sx={{ mb: 2 }}
-                  />
-                )}
-              />
-
-              {/* Options */}
-              <FormControlLabel
-                control={
-                  <Controller
-                    name="isAnonymous"
-                    control={donationForm.control}
-                    render={({ field }) => (
-                      <Checkbox
-                        checked={field.value}
-                        onChange={(e) => field.onChange(e.target.checked)}
-                      />
-                    )}
-                  />
-                }
-                label={t('donation.anonymous')}
-              />
-            </form>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setDonationDialogOpen(false)}>{t('common.close')}</Button>
-            <Button
-              variant="contained"
-              onClick={donationForm.handleSubmit(handleProceedToPayment)}
-              disabled={processing}
-            >
-              {processing ? 'Processing...' : t('donation.proceed')}
-</Button>
-            </DialogActions>
-          </>
-        </Dialog>
     </Container>
   );
 };
