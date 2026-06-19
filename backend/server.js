@@ -41,9 +41,32 @@ app.use(helmet({
 
 // CORS configuration
 // Support multiple origins (localhost, LAN IP, and production URLs)
+const defaultFrontendUrls = [
+  'http://localhost:3000',
+  'http://192.168.1.203:3000',
+  'https://nambbikai-fund-s3ql-qdpjseybf-sanjay-kumars-projects-6d1d4c33.vercel.app'
+];
 const corsOrigins = process.env.FRONTEND_URL
   ? process.env.FRONTEND_URL.split(',').map(origin => origin.trim())
-  : ['http://localhost:3000', 'https://nambbikai-fund-s3ql-qdpjseybf-sanjay-kumars-projects-6d1d4c33.vercel.app'];
+  : defaultFrontendUrls;
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return false;
+  return origin.includes('.vercel.app') || corsOrigins.includes(origin);
+};
+
+// Manual CORS headers are added before helmet/cors so Vercel preflight always gets headers.
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (isAllowedOrigin(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
+  }
+  next();
+});
 
 // Also add Vercel preview URLs pattern
 const corsOptions = {
@@ -51,24 +74,19 @@ const corsOptions = {
     // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
     
-    // Allow all vercel.app domains for preview deployments
-    if (origin.includes('.vercel.app') || corsOrigins.includes(origin)) {
+    if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
     
-    // Check if origin is in allowed list
-    if (corsOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
@@ -111,6 +129,28 @@ app.use('/locales', express.static(path.join(__dirname, '../frontend/public/loca
 // Language middleware for localization
 app.use(languageMiddleware);
 
+// Backward compatibility for old frontend builds that call routes without /api.
+// Internally all routes are still handled by the /api route groups below.
+const fallbackRoutePrefixes = [
+  '/auth',
+  '/campaigns',
+  '/users',
+  '/donations',
+  '/withdrawals',
+  '/admin',
+  '/payments',
+  '/notifications',
+  '/chatbot',
+  '/translate'
+];
+app.use((req, res, next) => {
+  const requestPath = req.path.split('?')[0];
+  if (fallbackRoutePrefixes.some(prefix => requestPath === prefix || requestPath.startsWith(`${prefix}/`))) {
+    req.url = `/api${req.url}`;
+  }
+  next();
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -150,7 +190,7 @@ app.use(errorHandler);
 
 // MongoDB connection
 const connectDB = async () => {
-  const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/nambikkai-fund';
+  const mongoUri = process.env.MONGODB_URI || 'mongodb://skworkinfo:Sanjay123@ac-zihorh4-shard-00-00.ptck28k.mongodb.net:27017,ac-zihorh4-shard-00-01.ptck28k.mongodb.net:27017,ac-zihorh4-shard-00-02.ptck28k.mongodb.net:27017/NambikkaiFund?ssl=true&replicaSet=atlas-ntzyza-shard-0&authSource=admin&retryWrites=true&w=majority';
   try {
     await mongoose.connect(mongoUri);
     console.log("✅ MongoDB Connected");

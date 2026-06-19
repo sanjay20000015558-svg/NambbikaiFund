@@ -8,7 +8,6 @@ const API_URL =
 // Create axios instance
 const axiosInstance = axios.create({
   baseURL: API_URL,
-  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -48,11 +47,12 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem('token');
     }
 
-    // Network Error
+    // Network Error / CORS / Backend down
     if (!error.response) {
+      const requestedUrl = `${error.config?.baseURL || ''}${error.config?.url || ''}`;
       return Promise.reject(
         new Error(
-          'Network Error: Unable to connect to the server. Please check whether the backend is running.'
+          `CORS or Network Error: Cannot reach backend. Check REACT_APP_API_URL and Vercel backend deployment. Requested: ${requestedUrl}`
         )
       );
     }

@@ -105,7 +105,12 @@ const Register = () => {
         const errorMessages = err.response.data.errors.map(e => e.message).join(', ');
         setError(errorMessages);
       } else {
-        setError(err.response?.data?.message || 'Registration failed. Please try again.');
+        const requestedUrl = `${err.config?.baseURL || ''}${err.config?.url || ''}`;
+        const backendMessage = err.response?.data?.message;
+        const message = !err.response
+          ? `Cannot connect to backend. Check backend URL/CORS. Requested: ${requestedUrl}`
+          : backendMessage || 'Registration failed. Please try again.';
+        setError(message);
       }
     } finally {
       setLoading(false);

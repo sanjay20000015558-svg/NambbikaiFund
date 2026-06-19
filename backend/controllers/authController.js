@@ -4,6 +4,8 @@ const User = require('../models/User');
 const { sendEmail, emailTemplates } = require('../config/email');
 const { uploadProfilePicture } = require('../middlewares/upload');
 
+const getFrontendUrl = () => (process.env.FRONTEND_URL || 'https://nambbikai-fund-s3ql-qdpjseybf-sanjay-kumars-projects-6d1d4c33.vercel.app').split(',')[0].trim();
+
 // Generate JWT token
 const generateToken = (id) => {
   const secret = process.env.JWT_SECRET || 'fallback-secret-key-never-use-in-production';
@@ -49,7 +51,7 @@ exports.register = async (req, res, next) => {
     });
 
     // Create verification URL
-    const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${emailVerificationToken}`;
+    const verificationUrl = `${getFrontendUrl()}/verify-email?token=${emailVerificationToken}`;
 
     // Send verification email
     const emailResult = await sendEmail({
@@ -227,7 +229,7 @@ exports.forgotPassword = async (req, res, next) => {
     await user.save();
 
     // Send reset email
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+    const resetUrl = `${getFrontendUrl()}/reset-password?token=${resetToken}`;
 
     await sendEmail({
       to: user.email,
