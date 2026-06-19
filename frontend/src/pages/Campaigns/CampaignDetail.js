@@ -28,7 +28,8 @@ import {
   TextField,
   MenuItem,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  Stack
 } from '@mui/material';
 import {
   Favorite,
@@ -399,7 +400,7 @@ const CampaignDetail = () => {
             <Typography variant="h5" color="primary" gutterBottom>
               ₹{campaign.amountRaised.toLocaleString('en-IN')}
               <Typography component="span" variant="body2" color="text.secondary">
-                {' '}{t('campaign.raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
+                {' '}{t('campaign raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
               </Typography>
             </Typography>
 
@@ -417,7 +418,7 @@ const CampaignDetail = () => {
               disabled={campaign.status !== 'approved'}
               sx={{ mb: 2 }}
             >
-              {campaign.status === 'approved' ? t('campaign.donateNow') : t('campaign.campaignClosed')}
+              {campaign.status === 'approved' ? t('Donate Now') : t('campaign.campaignClosed')}
             </Button>
 
             <Box display="flex" justifyContent="center" gap={1}>
