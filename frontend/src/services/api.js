@@ -63,25 +63,12 @@ axiosInstance.interceptors.response.use(
   (error) => {
     const originalRequest = error.config;
 
-    // Unauthorized
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest?._retry
-    ) {
+    // Unauthorized - clear token
+    if (error.response?.status === 401 && !originalRequest?._retry) {
       localStorage.removeItem('token');
     }
 
-    // Network Error / CORS / Backend down
-    if (!error.response) {
-      const requestedUrl = `${error.config?.baseURL || ''}${error.config?.url || ''}`;
-      return Promise.reject(
-        new Error(
-          `CORS or Network Error: Cannot reach backend. Check REACT_APP_API_URL and Vercel backend deployment. Requested: ${requestedUrl}`
-        )
-      );
-    }
-
+    // Let calling code handle the error with getAxiosErrorMessage
     return Promise.reject(error);
   }
 );
