@@ -41,46 +41,18 @@ app.use(helmet({
 
 // CORS configuration
 // Support multiple origins (localhost, LAN IP, and production URLs)
-const defaultFrontendUrls = [
-  'http://localhost:3000',
-  'http://192.168.1.203:3000',
-  'https://nambbikai-fund-s3ql-qdpjseybf-sanjay-kumars-projects-6d1d4c33.vercel.app'
-];
-const corsOrigins = process.env.FRONTEND_URL
-  ? process.env.FRONTEND_URL.split(',').map(origin => origin.trim())
-  : defaultFrontendUrls;
-
-const isAllowedOrigin = (origin) => {
-  if (!origin) return false;
-  return origin.includes('.vercel.app') || corsOrigins.includes(origin);
-};
-
-// Manual CORS headers are added before helmet/cors so Vercel preflight always gets headers.
 app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (isAllowedOrigin(origin)) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-    res.setHeader('Vary', 'Origin');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
-  }
+  const origin = req.headers.origin || '*';
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
   next();
 });
 
-// Also add Vercel preview URLs pattern
 const corsOptions = {
-  origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
-    
-    if (isAllowedOrigin(origin)) {
-      return callback(null, true);
-    }
-    
-    callback(new Error('Not allowed by CORS'));
-  },
-  credentials: true,
+  origin: true,
+  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   optionsSuccessStatus: 200

@@ -4,7 +4,7 @@ const User = require('../models/User');
 const { sendEmail, emailTemplates } = require('../config/email');
 const { uploadProfilePicture } = require('../middlewares/upload');
 
-const getFrontendUrl = () => (process.env.FRONTEND_URL || 'https://nambbikai-fund-s3ql-qdpjseybf-sanjay-kumars-projects-6d1d4c33.vercel.app').split(',')[0].trim();
+const getFrontendUrl = () => (process.env.FRONTEND_URL || 'https://nambbikai-fund-s3ql-182qf9zur-sanjay-kumars-projects-6d1d4c33.vercel.app').split(',')[0].trim();
 
 // Generate JWT token
 const generateToken = (id) => {
