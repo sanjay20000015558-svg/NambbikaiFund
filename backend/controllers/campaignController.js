@@ -126,7 +126,7 @@ exports.getCampaign = asyncHandler(async (req, res) => {
   }
 
   // Increment views
-  await Campaign.findByIdAndUpdate(campaign._id, { $inc: { views: 1 } });
+  await Campaign.findByIdAndUpdate(campaign_id, { $inc: { views: 1 } });
 
   // Enhance with computed fields
   campaign.progress = Math.round((campaign.amountRaised / campaign.targetAmount) * 100);
