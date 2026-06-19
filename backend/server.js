@@ -43,7 +43,7 @@ app.use(helmet({
 // Support multiple origins (localhost, LAN IP, and production URLs)
 const corsOrigins = process.env.FRONTEND_URL
   ? process.env.FRONTEND_URL.split(',').map(origin => origin.trim())
-  : ['http://localhost:3000'];
+  : ['http://localhost:3000', 'https://nambbikai-fund-s3ql-qdpjseybf-sanjay-kumars-projects-6d1d4c33.vercel.app'];
 
 // Also add Vercel preview URLs pattern
 const corsOptions = {
@@ -150,14 +150,12 @@ app.use(errorHandler);
 
 // MongoDB connection
 const connectDB = async () => {
+  const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/nambikkai-fund';
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
-
+    await mongoose.connect(mongoUri);
     console.log("✅ MongoDB Connected");
   } catch (err) {
     console.error("❌ MongoDB Error:", err.message);
-
-    // Never stop Vercel function
   }
 };
 
