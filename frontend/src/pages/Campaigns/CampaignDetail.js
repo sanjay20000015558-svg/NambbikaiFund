@@ -264,19 +264,19 @@ const CampaignDetail = () => {
                   ₹<CountUp end={campaign.amountRaised} separator="," duration={1.5} />
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('campaign.raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
+                  {t('campaign raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
                 </Typography>
               </Box>
               <Box>
                 <Typography variant="h4">{campaign.donorsCount}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('campaign.donors')}
+                  {t('campaign donors')}
                 </Typography>
               </Box>
               <Box>
                 <Typography variant="h4">{daysLeft}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('campaign.daysLeft')}
+                  {t('campaign daysLeft')}
                 </Typography>
               </Box>
             </Box>
@@ -299,7 +299,7 @@ const CampaignDetail = () => {
           {/* Creator info */}
           <Paper sx={{ p: 3, mb: 4 }}>
             <Typography variant="h6" gutterBottom>
-              {t('campaign.fundraiserBy')} {campaign.creatorName}
+              {t('fundraiser By')} {campaign.creatorName}
             </Typography>
             <Box display="flex" alignItems="center" gap={2}>
               <Avatar src={campaign.creator?.profilePicture?.url} />
@@ -317,9 +317,9 @@ const CampaignDetail = () => {
           {/* Tabs */}
           <Paper sx={{ mb: 4 }}>
             <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)}>
-              <Tab label={t('campaign.story')} />
-              <Tab label={t('campaign.updates')} />
-              <Tab label={t('campaign.donorsList')} />
+              <Tab label={t('Story')} />
+              <Tab label={t('Updates')} />
+              <Tab label={t('Donors list')} />
             </Tabs>
 
             <Divider />
