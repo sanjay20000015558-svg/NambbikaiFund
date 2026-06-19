@@ -1,9 +1,34 @@
 import axios from 'axios';
 
 // API Base URL
-const API_URL =
+const RAW_API_URL =
   process.env.REACT_APP_API_URL ||
-  'http://localhost:5000/api';
+  'https://nambbikai-fund-5pzfflwra-sanjay-kumars-projects-6d1d4c33.vercel.app/api';
+
+const API_URL = RAW_API_URL.replace(/\/$/, '');
+
+export const getAxiosRequestUrl = (error) => {
+  const baseURL = error.config?.baseURL ? error.config.baseURL.replace(/\/$/, '') : '';
+  return `${baseURL}${error.config?.url || ''}`;
+};
+
+export const getAxiosErrorMessage = (error, fallbackMessage) => {
+  const requestedUrl = getAxiosRequestUrl(error);
+
+  if (!error.response) {
+    return `Cannot connect to backend. Check backend URL/CORS. Requested: ${requestedUrl}`;
+  }
+
+  const status = error.response.status;
+  const data = error.response.data || {};
+  const backendMessage = data.message || data.error || '';
+
+  if (status === 401) {
+    return `HTTP 401 Unauthorized. Vercel or backend rejected the request before the API handled it. Check Vercel Deployment Protection/password protection. Requested: ${requestedUrl}`;
+  }
+
+  return `HTTP ${status}: ${backendMessage || fallbackMessage || 'Backend rejected the request.'} Requested: ${requestedUrl}`;
+};
 
 // Create axios instance
 const axiosInstance = axios.create({

@@ -31,6 +31,7 @@ import { motion } from 'framer-motion';
 import { useDispatch } from 'react-redux';
 
 import { authAPI } from '../../services/authService';
+import { getAxiosErrorMessage } from '../../services/api';
 import { registerSuccess } from '../../redux/slices/authSlice';
 import { showSnackbar } from '../../redux/slices/uiSlice';
 
@@ -105,12 +106,7 @@ const Register = () => {
         const errorMessages = err.response.data.errors.map(e => e.message).join(', ');
         setError(errorMessages);
       } else {
-        const requestedUrl = `${err.config?.baseURL || ''}${err.config?.url || ''}`;
-        const backendMessage = err.response?.data?.message;
-        const message = !err.response
-          ? `Cannot connect to backend. Check backend URL/CORS. Requested: ${requestedUrl}`
-          : backendMessage || 'Registration failed. Please try again.';
-        setError(message);
+        setError(getAxiosErrorMessage(err, 'Registration failed. Please try again.'));
       }
     } finally {
       setLoading(false);

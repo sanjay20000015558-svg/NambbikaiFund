@@ -11,7 +11,8 @@ import {
   Stack,
   Card,
   CardContent,
-  CircularProgress
+  CircularProgress,
+  Alert
 } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -19,6 +20,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import CampaignCard from '../components/Campaign/CampaignCard';
 import { campaignAPI } from '../services/campaignService';
+import { getAxiosErrorMessage } from '../services/api';
 import { formatCurrency } from '../utils/formatCurrency';
 
 const LandingPage = () => {
@@ -27,6 +29,7 @@ const LandingPage = () => {
   const { t } = useTranslation();
 
   const [featuredCampaigns, setFeaturedCampaigns] = useState([]);
+  const [backendError, setBackendError] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -40,6 +43,7 @@ const LandingPage = () => {
       setFeaturedCampaigns(res.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
+      setBackendError(getAxiosErrorMessage(error, 'Cannot load campaigns.'));
     } finally {
       setLoading(false);
     }
@@ -55,6 +59,16 @@ const LandingPage = () => {
           </Typography>
         </Box>
       </Box>
+    );
+  }
+
+  if (backendError) {
+    return (
+      <Container maxWidth="md" sx={{ py: 6 }}>
+        <Alert severity="error" sx={{ mb: 3 }}>
+          {backendError}
+        </Alert>
+      </Container>
     );
   }
 
