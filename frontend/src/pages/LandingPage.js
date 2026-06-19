@@ -11,8 +11,7 @@ import {
   Stack,
   Card,
   CardContent,
-  CircularProgress,
-  Alert
+  CircularProgress
 } from '@mui/material';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -28,7 +27,6 @@ const LandingPage = () => {
   const { t } = useTranslation();
 
   const [featuredCampaigns, setFeaturedCampaigns] = useState([]);
-  const [backendError, setBackendError] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,8 +39,7 @@ const LandingPage = () => {
       const res = await campaignAPI.getCampaigns({ limit: 4 });
       setFeaturedCampaigns(res.data.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
-      setBackendError('Unable to load campaigns at the moment. Please try again later.');
+      console.error('Error fetching campaigns:', error);
     } finally {
       setLoading(false);
     }
@@ -63,15 +60,6 @@ const LandingPage = () => {
 
 return (
     <>
-      {backendError && (
-        <Box sx={{ position: 'absolute', top: 80, left: 0, right: 0, zIndex: 1000 }}>
-          <Container maxWidth="md">
-            <Alert severity="warning" sx={{ mb: 3 }}>
-              {backendError}
-            </Alert>
-          </Container>
-        </Box>
-      )}
       {/* HERO SECTION - Emotional storytelling */}
       <Box
         sx={{
