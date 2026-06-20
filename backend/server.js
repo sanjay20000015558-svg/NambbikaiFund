@@ -164,18 +164,16 @@ const connectDB = async () => {
 // Graceful shutdown
 process.on("SIGTERM", () => {
   console.log("SIGTERM received");
-  mongoose.connection.close(() => {
-    console.log("MongoDB Closed");
-    process.exit(0);
-  });
+  mongoose.connection.close(false);
+  console.log("MongoDB Closed");
+  process.exit(0);
 });
 
 process.on("SIGINT", () => {
   console.log("SIGINT received");
-  mongoose.connection.close(() => {
-    console.log("MongoDB Closed");
-    process.exit(0);
-  });
+  mongoose.connection.close(false);
+  console.log("MongoDB Closed");
+  process.exit(0);
 });
 
 // Connect MongoDB
