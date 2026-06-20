@@ -18,7 +18,8 @@ import {
   ListItemText,
   IconButton,
   Alert,
-  Skeleton
+  Skeleton,
+  Stack
 } from '@mui/material';
 import {
   Favorite,
@@ -52,6 +53,7 @@ const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [processing, setProcessing] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
 
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
