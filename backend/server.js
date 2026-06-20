@@ -152,9 +152,12 @@ app.use(errorHandler);
 
 // MongoDB connection
 const connectDB = async () => {
-  const mongoUri = process.env.MONGODB_URI || 'mongodb://skworkinfo:Sanjay123@ac-zihorh4-shard-00-00.ptck28k.mongodb.net:27017,ac-zihorh4-shard-00-01.ptck28k.mongodb.net:27017,ac-zihorh4-shard-00-02.ptck28k.mongodb.net:27017/NambikkaiFund?ssl=true&replicaSet=atlas-ntzyza-shard-0&authSource=admin&retryWrites=true&w=majority';
+  if (!process.env.MONGODB_URI) {
+    console.error("❌ MONGODB_URI not set");
+    return;
+  }
   try {
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log("✅ MongoDB Connected");
   } catch (err) {
     console.error("❌ MongoDB Error:", err.message);
