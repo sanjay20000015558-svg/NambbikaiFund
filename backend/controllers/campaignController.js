@@ -7,23 +7,11 @@ const asyncHandler = require('../middlewares/asyncHandler');
 // @desc    Get all campaigns (with filters)
 // @route   GET /api/campaigns
 // @access  Public
+// Get all campaigns (public) - only show approved campaigns
 exports.getCampaigns = asyncHandler(async (req, res) => {
-  const {
-     page = 1,
-     limit = 12,
-     category,
-     status = 'approved',
-     city,
-     state,
-    isUrgent,
-    isFeatured,
-    search,
-    sortBy = 'createdAt',
-    order = 'desc',
-    verify
-  } = req.query;
+  const { page = 1, limit = 12, category, search, sortBy = 'createdAt', order = 'desc', isUrgent, isFeatured, leukemia, city, state } = req.query;
 
-  const query = {};
+  const query = { status: 'approved', isVisible: true };
 
   // Only show live campaigns by default unless specified
   if (status) {

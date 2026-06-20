@@ -188,6 +188,7 @@
       "minimumDonation": "Minimum donation is ₹1",
       "selectAmountError": "Please select or enter an amount",
       "createPaymentFailed": "Failed to create payment. Please try again.",
+      "Donate Now": "Donate Now",
       "makeDonation": "Make a Donation",
       "close": "Close",
       "back": "Back",

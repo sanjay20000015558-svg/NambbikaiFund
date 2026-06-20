@@ -47,7 +47,7 @@ const CampaignDetail = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -73,10 +73,24 @@ const dispatch = useDispatch();
     }
   };
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) {
+        resolve();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve();
+      script.onerror = () => dispatch(showSnackbar({ message: 'Failed to load Razorpay. Please refresh and try again.', severity: 'error' }));
+      document.body.appendChild(script);
+    });
+  };
+
   const handleDonateClick = async () => {
     if (!campaign) return;
 
-    if (campaign.status !== 'approved') {
+    if (campaign.status !== 'approved' && campaign.status !== 'live') {
       dispatch(showSnackbar({ message: t('campaign.notAcceptingDonations'), severity: 'warning' }));
       return;
     }
@@ -95,11 +109,22 @@ const dispatch = useDispatch();
       });
 
       const orderData = res.data.data || res.data;
+      
+      if (!orderData || !orderData.orderId) {
+        throw new Error('Invalid order response from server');
+      }
+
       const razorpayKey = process.env.REACT_APP_RAZORPAY_KEY_ID || '';
+      
+      if (!razorpayKey) {
+        throw new Error('Razorpay key not configured');
+      }
+
+      await loadRazorpayScript();
 
       const options = {
         key: razorpayKey,
-        amount: orderData.amount * 100,
+        amount: orderData.amount,
         currency: 'INR',
         name: t('navbar.brand'),
         description: `Donation to ${campaign.title}`,
@@ -119,20 +144,11 @@ const dispatch = useDispatch();
         theme: { color: '#2F7C7B' }
       };
 
-      if (!window.Razorpay) {
-        const script = document.createElement('script');
-        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-        script.onload = () => {
-          const rzp = new window.Razorpay(options);
-          rzp.open();
-        };
-        document.body.appendChild(script);
-      } else {
-        const rzp = new window.Razorpay(options);
-        rzp.open();
-      }
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (error) {
-      dispatch(showSnackbar({ message: t('campaign.createPaymentFailed'), severity: 'error' }));
+      const errorMessage = error.response?.data?.message || error.message || 'Unable to create payment. Please try again.';
+      dispatch(showSnackbar({ message: errorMessage, severity: 'error' }));
     } finally {
       setProcessing(false);
     }
@@ -140,7 +156,7 @@ const dispatch = useDispatch();
 
   const handlePaymentSuccess = async (data) => {
     try {
-      const res = await donationAPI.verifyPayment({
+      await donationAPI.verifyPayment({
         razorpay_order_id: data.razorpay_order_id,
         razorpay_payment_id: data.razorpay_payment_id,
         razorpay_signature: data.razorpay_signature
@@ -153,7 +169,7 @@ const dispatch = useDispatch();
       }));
     } catch (error) {
       dispatch(showSnackbar({
-        message: t('payment.verificationFailed'),
+        message: error.response?.data?.message || t('payment.verificationFailed'),
         severity: 'error'
       }));
     }
@@ -374,10 +390,10 @@ const dispatch = useDispatch();
               fullWidth
               size="large"
               onClick={handleDonateClick}
-              disabled={campaign.status !== 'approved'}
+              disabled={campaign.status !== 'approved' && campaign.status !== 'live'}
               sx={{ mb: 2 }}
             >
-              {campaign.status === 'approved' ? t('Donate Now') : t('campaign.campaignClosed')}
+              {(campaign.status === 'approved' || campaign.status === 'live') ? t('Donate Now') : t('campaign.campaignClosed')}
             </Button>
 
             <Box display="flex" justifyContent="center" gap={1}>

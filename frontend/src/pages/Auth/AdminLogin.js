@@ -76,7 +76,7 @@ const AdminLogin = () => {
         })
       );
 
-      navigate('/admin/campaign-requests', { replace: true });
+      navigate('/admin', { replace: true });
     } catch (err) {
       if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
         const errorMessages = err.response.data.errors.map(e => e.message).join(', ');
