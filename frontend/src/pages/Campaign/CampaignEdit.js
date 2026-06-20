@@ -241,7 +241,7 @@ const CampaignEdit = () => {
                   <TextField
                     {...field}
                     fullWidth
-                    label={t('campaign.shortDescription')}
+                    label={t('shortDescription')}
                     multiline
                     rows={2}
                     error={!!errors.shortDescription}

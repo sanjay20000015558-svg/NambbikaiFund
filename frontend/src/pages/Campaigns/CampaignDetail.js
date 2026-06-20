@@ -19,7 +19,8 @@ import {
   IconButton,
   Alert,
   Skeleton,
-  Stack
+  Stack,
+  TextField
 } from '@mui/material';
 import {
   Favorite,
@@ -52,6 +53,7 @@ const CampaignDetail = () => {
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [donationAmount, setDonationAmount] = useState('');
   const [processing, setProcessing] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -102,9 +104,14 @@ const CampaignDetail = () => {
 
     setProcessing(true);
     try {
+      if (!donationAmount || parseFloat(donationAmount) < 1) {
+        dispatch(showSnackbar({ message: t('donation.enterAmount'), severity: 'warning' }));
+        return;
+      }
+      
       const res = await donationAPI.createOrder({
         campaignId: campaign._id,
-        amount: 1000,
+        amount: parseFloat(donationAmount),
         isAnonymous: false
       });
 
@@ -385,12 +392,23 @@ const CampaignDetail = () => {
               sx={{ height: 8, borderRadius: 4, mb: 2 }}
             />
 
+            <TextField
+              label={t('donation.amount')}
+              type="number"
+              fullWidth
+              value={donationAmount}
+              onChange={(e) => setDonationAmount(e.target.value)}
+              sx={{ mb: 2 }}
+              inputProps={{ min: 1, max: campaign.targetAmount - campaign.amountRaised || 10000000 }}
+              helperText={t('donation.minAmount', { min: 1 })}
+            />
+
             <Button
               variant="contained"
               fullWidth
               size="large"
               onClick={handleDonateClick}
-              disabled={campaign.status !== 'approved' && campaign.status !== 'live'}
+              disabled={campaign.status !== 'approved' && campaign.status !== 'live' || !donationAmount || parseFloat(donationAmount) < 1}
               sx={{ mb: 2 }}
             >
               {(campaign.status === 'approved' || campaign.status === 'live') ? t('Donate Now') : t('campaign.campaignClosed')}
@@ -420,7 +438,7 @@ const CampaignDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <AccessTime color={daysLeft < 7 ? 'error' : 'action'} />
                 <Typography color={daysLeft < 7 ? 'error' : 'text.secondary'}>
-                  {daysLeft} {t('campaign.daysRemaining')}
+                  {daysLeft} {t('daysRemaining')}
                 </Typography>
               </Box>
             )}

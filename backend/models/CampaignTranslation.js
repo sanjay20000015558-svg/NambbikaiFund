@@ -63,14 +63,14 @@ campaignTranslationSchema.statics.getTranslation = async function(campaignId, la
   if (campaign) {
     return {
       language: fallbackLng,
-      title: campaign.title,
-      story: campaign.description,
-      patientName: campaign.patientName,
-      hospitalName: campaign.hospitalName,
-      diagnosis: campaign.medicalDetails?.diagnosis,
-      treatment: campaign.medicalDetails?.treatment,
-      budget: campaign.targetAmount ? `₹${campaign.targetAmount}` : null,
-      location: campaign.location
+      title: title,
+      story: description,
+      patientName: Name,
+      hospitalName: hospitalName,
+      diagnosis: medicalDetails?.diagnosis,
+      treatment: medicalDetails?.treatment,
+      budget: targetAmount ? `₹${targetAmount}` : null,
+      location: location
     };
   }
   

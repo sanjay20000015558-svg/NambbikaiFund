@@ -118,7 +118,7 @@ exports.getCampaign = asyncHandler(async (req, res) => {
 
   // Enhance with computed fields
   campaign.progress = Math.round((campaign.amountRaised / campaign.targetAmount) * 100);
-  campaign.daysRemaining = Math.max(0, Math.ceil((new Date(campaign.deadline) - new Date()) / (1000 * 60 * 60 * 24)));
+  daysRemaining = Math.max(0, Math.ceil((new Date(campaign.deadline) - new Date()) / (1000 * 60 * 60 * 24)));
 
   res.status(200).json({
     success: true,

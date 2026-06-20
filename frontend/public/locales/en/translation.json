@@ -239,6 +239,8 @@
   },
   "donation": {
     "amount": "Donation Amount (₹)",
+    "enterAmount": "Please enter a donation amount",
+    "minAmount": "Minimum: ₹{{min}}",
     "presetAmounts": {
       "500": "₹500",
       "1000": "₹1000",

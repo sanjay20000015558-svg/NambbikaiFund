@@ -51,7 +51,7 @@ import { showSnackbar } from '../../redux/slices/uiSlice';
 import { useDispatch } from 'react-redux';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
 
-const steps = ['campaign.basicInfo', 'campaign.patientDetails', 'campaign.campaignImages', 'campaign.supportingDocuments', 'campaign.review'];
+const steps = ['campaign basicInfo', 'campaign Details', 'campaign Images', 'campaign supporting Documents', 'campaign review'];
 
 const CampaignCreate = () => {
   const { t } = useTranslation();
@@ -267,7 +267,7 @@ const CampaignCreate = () => {
                 name="agricultureDetails.farmSize"
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} fullWidth label={t('campaign.farmSize')} />
+                  <TextField {...field} fullWidth label={t('Farm Size')} />
                 )}
               />
             </Grid>
@@ -276,7 +276,7 @@ const CampaignCreate = () => {
                 name="agricultureDetails.cropType"
                 control={control}
                 render={({ field }) => (
-                  <TextField {...field} fullWidth label={t('campaign.cropType')} />
+                  <TextField {...field} fullWidth label={t('Crop Type')} />
                 )}
               />
             </Grid>
@@ -308,11 +308,11 @@ const CampaignCreate = () => {
                 <Controller
                   name="category"
                   control={control}
-                  rules={{ required: t('common.categoryRequired') }}
+                  rules={{ required: t('categoryRequired') }}
                   render={({ field }) => (
                     <FormControl fullWidth error={!!errors.category}>
-                      <InputLabel>{t('campaign.form.category')}</InputLabel>
-                      <Select {...field} label={t('campaign.form.category')}>
+                      <InputLabel>{t('category')}</InputLabel>
+                      <Select {...field} label={t('campaign.categories.category')}>
                         <MenuItem value="leukemia">{t('campaign.categories.leukemia')}</MenuItem>
                         <MenuItem value="medical">{t('campaign.categories.medical')}</MenuItem>
                         <MenuItem value="education">{t('campaign.categories.education')}</MenuItem>
@@ -353,7 +353,7 @@ const CampaignCreate = () => {
                     <TextField
                       {...field}
                       fullWidth
-                      label={t('campaign.shortDescription')}
+                      label={t('shortDescription')}
                       multiline
                       rows={2}
                       error={!!errors.shortDescription}
@@ -407,12 +407,12 @@ const CampaignCreate = () => {
                   control={control}
                   render={({ field }) => (
                     <FormControl fullWidth>
-                      <InputLabel>{t('common.urgencyLabel')}</InputLabel>
-                      <Select {...field} label={t('common.urgencyLabel')}>
-                        <MenuItem value="low">{t('common.low')}</MenuItem>
-                        <MenuItem value="medium">{t('common.medium')}</MenuItem>
-                        <MenuItem value="high">{t('common.high')}</MenuItem>
-                        <MenuItem value="critical">{t('common.critical')}</MenuItem>
+                      <InputLabel>{t('urgencyLabel')}</InputLabel>
+                      <Select {...field} label={t('urgencyLabel')}>
+                        <MenuItem value="low">{t('low')}</MenuItem>
+                        <MenuItem value="medium">{t('medium')}</MenuItem>
+                        <MenuItem value="high">{t('high')}</MenuItem>
+                        <MenuItem value="critical">{t('critical')}</MenuItem>
                       </Select>
                     </FormControl>
                   )}
@@ -440,37 +440,37 @@ const CampaignCreate = () => {
       case 1:
         return (
           <Box>
-            <Typography variant="h6" gutterBottom>{t('campaign.patientBeneficiaryDetails')}</Typography>
+            <Typography variant="h6" gutterBottom>{t('Campaign Beneficiary Details')}</Typography>
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <Controller
-                  name="patientDetails.name"
+                  name="Name"
                   control={control}
                   render={({ field }) => (
-                    <TextField {...field} fullWidth label={t('campaign.patientName')} />
+                    <TextField {...field} fullWidth label={t('Name')} />
                   )}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Controller
-                  name="patientDetails.age"
+                  name="Age"
                   control={control}
                   render={({ field }) => (
-                    <TextField {...field} fullWidth label={t('profile.age')} type="number" />
+                    <TextField {...field} fullWidth label={t('age')} type="number" />
                   )}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Controller
-                  name="patientDetails.gender"
+                  name="gender"
                   control={control}
                   render={({ field }) => (
                     <FormControl fullWidth>
-                      <InputLabel>{t('profile.genderLabel')}</InputLabel>
-                      <Select {...field} label={t('profile.genderLabel')}>
-                        <MenuItem value="male">{t('profile.male')}</MenuItem>
-                        <MenuItem value="female">{t('profile.female')}</MenuItem>
-                        <MenuItem value="other">{t('profile.other')}</MenuItem>
+                      <InputLabel>{t('genderLabel')}</InputLabel>
+                      <Select {...field} label={t('genderLabel')}>
+                        <MenuItem value="male">{t('male')}</MenuItem>
+                        <MenuItem value="female">{t('female')}</MenuItem>
+                        <MenuItem value="other">{t('other')}</MenuItem>
                       </Select>
                     </FormControl>
                   )}
@@ -478,10 +478,10 @@ const CampaignCreate = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Controller
-                  name="patientDetails.relationship"
+                  name="relationship"
                   control={control}
                   render={({ field }) => (
-                    <TextField {...field} fullWidth label={t('campaign.relationship')} />
+                    <TextField {...field} fullWidth label={t('relationship')} />
                   )}
                 />
               </Grid>
@@ -490,14 +490,14 @@ const CampaignCreate = () => {
 
               <Grid item xs={12}>
                 <Controller
-                  name="location.city"
+                  name="city"
                   control={control}
-                  rules={{ required: t('common.cityRequired') }}
+                  rules={{ required: t('cityRequired') }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       fullWidth
-                      label={t('profile.city')}
+                      label={t('city')}
                       error={!!errors.location?.city}
                       helperText={errors.location?.city?.message}
                     />
@@ -507,14 +507,14 @@ const CampaignCreate = () => {
 
               <Grid item xs={12} sm={6}>
                 <Controller
-                  name="location.state"
+                  name="state"
                   control={control}
-                  rules={{ required: t('common.stateRequired') }}
+                  rules={{ required: t('stateRequired') }}
                   render={({ field }) => (
                     <TextField
                       {...field}
                       fullWidth
-                      label={t('profile.state')}
+                      label={t('state')}
                       error={!!errors.location?.state}
                     />
                   )}
@@ -527,11 +527,11 @@ const CampaignCreate = () => {
       case 2:
         return (
           <Box>
-            <Typography variant="h6" gutterBottom>{t('campaign.campaignImages')}</Typography>
+            <Typography variant="h6" gutterBottom>{t('Campaign Images')}</Typography>
 
             {/* Cover Image */}
             <Box mb={3}>
-              <Typography gutterBottom>{t('campaign.coverImage')} {t('campaign.coverImageRequired')}</Typography>
+              <Typography gutterBottom>{t('Cover Image')} {t()}</Typography>
               <input
                 accept="image/*"
                 type="file"
@@ -541,7 +541,7 @@ const CampaignCreate = () => {
               />
               <label htmlFor="cover-image-upload">
                 <Button variant="outlined" startIcon={<UploadIcon />} component="span">
-                  {t('campaign.uploadCoverImage')}
+                  {t('Upload Cover Image')}
                 </Button>
               </label>
               {coverImage && (
@@ -553,7 +553,7 @@ const CampaignCreate = () => {
 
             {/* Campaign Images */}
             <Box mb={3}>
-              <Typography gutterBottom>{t('campaign.imagesCount', { count: uploadedImages.length })}</Typography>
+              <Typography gutterBottom>{t('imagesCount', { count: uploadedImages.length })}</Typography>
               <input
                 accept="image/*"
                 multiple
@@ -564,7 +564,7 @@ const CampaignCreate = () => {
               />
               <label htmlFor="images-upload">
                 <Button variant="outlined" startIcon={<AddIcon />} component="span" disabled={uploadedImages.length >= 10}>
-                  {t('campaign.addImages')}
+                  {t('Campaign Images')}
                 </Button>
               </label>
 
@@ -594,9 +594,9 @@ const CampaignCreate = () => {
       case 3:
         return (
           <Box>
-            <Typography variant="h6" gutterBottom>{t('campaign.supportingDocuments')}</Typography>
+            <Typography variant="h6" gutterBottom>{t('Campaign supporting Documents')}</Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              {t('campaign.documentsHelp')}
+              {t('Documents Help')}
             </Typography>
 
             <input
@@ -609,7 +609,7 @@ const CampaignCreate = () => {
             />
             <label htmlFor="documents-upload">
               <Button variant="outlined" startIcon={<UploadIcon />} component="span">
-                {t('campaign.uploadDocuments')}
+                {t('Upload Documents')}
               </Button>
             </label>
 
@@ -634,33 +634,33 @@ const CampaignCreate = () => {
       case 4:
         return (
           <Box>
-            <Typography variant="h6" gutterBottom>{t('campaign.review')}</Typography>
+            <Typography variant="h6" gutterBottom>{t('Campaign review')}</Typography>
 
             <Paper sx={{ p: 3, mb: 3 }}>
-              <Typography variant="h5">{watch('title') || t('common.untitledCampaign')}</Typography>
-              <Chip label={t(`campaign.categories.${watch('category')}`)} size="small" sx={{ mt: 1 }} />
+              <Typography variant="h5">{watch('title') || t('Untitled Campaign')}</Typography>
+              <Chip label={t(`Campaign Categories.${watch('category')}`)} size="small" sx={{ mt: 1 }} />
 
               <Divider sx={{ my: 2 }} />
 
-              <Typography variant="subtitle1" gutterBottom>{t('campaign.form.goal')}: ₹{watch('targetAmount')}</Typography>
+              <Typography variant="subtitle1" gutterBottom>{t('Goal')}: ₹{watch('Target Amount')}</Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                {t('campaign.form.deadline')}: {new Date(watch('deadline')).toLocaleDateString()}
+                {t('Deadline')}: {new Date(watch('Deadline')).toLocaleDateString()}
               </Typography>
 
               <Typography variant="body1" paragraph>
                 {watch('description')}
               </Typography>
 
-              {watchCategory === 'medical' && watch('medicalDetails.hospitalName') && (
+              {watchCategory === 'medical' && watch('Hospital Name') && (
                 <Box>
-                  <Typography variant="subtitle2">{t('campaign.medicalDetails')}</Typography>
-                  <Typography variant="body2">{t('campaign.hospitalName')}: {watch('medicalDetails.hospitalName')}</Typography>
+                  <Typography variant="subtitle2">{t('Medical Details')}</Typography>
+                  <Typography variant="body2">{t('Hospital Name')}: {watch('Hospital Name')}</Typography>
                 </Box>
               )}
             </Paper>
 
             <Alert severity="info">
-              {t('campaign.reviewAfterSubmit')}
+              {t('Review after submit')}
             </Alert>
           </Box>
         );
@@ -673,7 +673,7 @@ const CampaignCreate = () => {
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Typography variant="h3" gutterBottom align="center">
-        {t('campaign.start')}
+        {t('Start')}
       </Typography>
 
       <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
@@ -689,7 +689,7 @@ const CampaignCreate = () => {
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
           <Button disabled={activeStep === 0} onClick={handleBack}>
-            {t('common.back')}
+            {t('Back')}
           </Button>
           <Box>
             {activeStep === steps.length - 1 ? (
@@ -699,11 +699,11 @@ const CampaignCreate = () => {
                 disabled={loading}
                 startIcon={loading ? <CircularProgress size={20} /> : <CheckCircleIcon />}
               >
-                {t('common.submit')}
+                {t('Submit')}
               </Button>
             ) : (
               <Button variant="contained" onClick={handleNext}>
-                {t('common.next')}
+                {t('Next')}
               </Button>
             )}
           </Box>
