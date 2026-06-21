@@ -69,7 +69,7 @@ const CampaignDetail = () => {
       const res = await campaignAPI.getCampaign(id);
       setCampaign(res.data.data);
     } catch (err) {
-      setError(err.response?.data?.message || t('campaign.notFound'));
+      setError(err.response?.data?.message || t('campaignNotFound'));
     } finally {
       setLoading(false);
     }
@@ -93,7 +93,7 @@ const CampaignDetail = () => {
     if (!campaign) return;
 
     if (campaign.status !== 'approved' && campaign.status !== 'live') {
-      dispatch(showSnackbar({ message: t('campaign.notAcceptingDonations'), severity: 'warning' }));
+      dispatch(showSnackbar({ message: t('campaign.form.notAcceptingDonations'), severity: 'warning' }));
       return;
     }
 
@@ -171,7 +171,7 @@ const CampaignDetail = () => {
 
       fetchCampaign();
       dispatch(showSnackbar({
-        message: t('donation.thankYou'),
+        message: t('donation.success'),
         severity: 'success'
       }));
     } catch (error) {
@@ -246,19 +246,19 @@ const CampaignDetail = () => {
                   ₹<CountUp end={campaign.amountRaised} separator="," duration={1.5} />
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('campaign raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
+{t('campaign.form.raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
                 </Typography>
               </Box>
               <Box>
                 <Typography variant="h4">{campaign.donorsCount}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('campaign donors')}
+                  {t('campaign.form.donors')}
                 </Typography>
               </Box>
               <Box>
                 <Typography variant="h4">{daysLeft}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('campaign daysLeft')}
+                  {t('campaign.form.daysLeft')}
                 </Typography>
               </Box>
             </Box>
@@ -281,7 +281,7 @@ const CampaignDetail = () => {
           {/* Creator info */}
           <Paper sx={{ p: 3, mb: 4 }}>
             <Typography variant="h6" gutterBottom>
-              {t('fundraiser By')} {campaign.creatorName}
+              {t('campaign.form.fundraiserBy')} {campaign.creatorName}
             </Typography>
             <Box display="flex" alignItems="center" gap={2}>
               <Avatar src={campaign.creator?.profilePicture?.url} />
@@ -289,7 +289,7 @@ const CampaignDetail = () => {
                 <Typography>{campaign.creatorName}</Typography>
                 {campaign.creator?.isVerified && (
                   <Typography variant="body2" color="success.main">
-                    {t('campaign.verifiedUser')}
+                    {t('campaign.form.verifiedUser')}
                   </Typography>
                 )}
               </Box>
@@ -299,9 +299,9 @@ const CampaignDetail = () => {
           {/* Tabs */}
           <Paper sx={{ mb: 4 }}>
             <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)}>
-              <Tab label={t('Story')} />
-              <Tab label={t('Updates')} />
-              <Tab label={t('Donors list')} />
+              <Tab label={t('campaign.form.Story')} />
+              <Tab label={t('campaign.form.Updates')} />
+              <Tab label={t('campaign.form.Donors list')} />
             </Tabs>
 
             <Divider />
@@ -323,21 +323,21 @@ const CampaignDetail = () => {
                     {campaign.description}
                   </Typography>
 
-                  {/* Medical details if relevant */}
-                  {campaign.category === 'medical' && campaign.medicalDetails && (
-                    <Box sx={{ mt: 4 }}>
-                      <Typography variant="h6" gutterBottom>{t('campaign.medicalDetails')}</Typography>
-                      {campaign.medicalDetails.hospitalName && (
-                        <Typography sx={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}><strong>{t('campaign.hospitalName')}:</strong> {campaign.medicalDetails.hospitalName}</Typography>
-                      )}
-                      {campaign.medicalDetails.doctorName && (
-                        <Typography sx={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}><strong>{t('campaign.doctorName')}:</strong> {campaign.medicalDetails.doctorName}</Typography>
-                      )}
-                      {campaign.medicalDetails.diagnosis && (
-                        <Typography sx={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}><strong>{t('campaign.diagnosis')}:</strong> {campaign.medicalDetails.diagnosis}</Typography>
-                      )}
-                    </Box>
-                  )}
+{/* Medical details if relevant */}
+                   {campaign.category === 'medical' && campaign.medicalDetails && (
+                     <Box sx={{ mt: 4 }}>
+                       <Typography variant="h6" gutterBottom>{t('campaign.form.medicalDetails')}</Typography>
+                       {campaign.medicalDetails.hospitalName && (
+                         <Typography sx={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}><strong>{t('campaign.form.hospitalName')}:</strong> {campaign.medicalDetails.hospitalName}</Typography>
+                       )}
+                       {campaign.medicalDetails.doctorName && (
+                         <Typography sx={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}><strong>{t('campaign.form.doctorName')}:</strong> {campaign.medicalDetails.doctorName}</Typography>
+                       )}
+                       {campaign.medicalDetails.diagnosis && (
+                         <Typography sx={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}><strong>{t('campaign.form.diagnosis')}:</strong> {campaign.medicalDetails.diagnosis}</Typography>
+                       )}
+                     </Box>
+                   )}
                 </Box>
               )}
 
@@ -354,7 +354,7 @@ const CampaignDetail = () => {
                       </Paper>
                     ))
                   ) : (
-                    <Typography color="text.secondary">{t('campaign.noUpdates')}</Typography>
+                    <Typography color="text.secondary">{t('campaign.form.noUpdates')}</Typography>
                   )}
                 </Box>
               )}
@@ -362,7 +362,7 @@ const CampaignDetail = () => {
               {activeTab === 2 && (
                 <Box>
                   <Typography color="text.secondary">
-                    {t('campaign.donorListPlaceholder')}
+                    {t('campaign.form.donorListPlaceholder')}
                   </Typography>
                 </Box>
               )}
@@ -382,7 +382,7 @@ const CampaignDetail = () => {
             <Typography variant="h5" color="primary" gutterBottom>
               ₹{campaign.amountRaised.toLocaleString('en-IN')}
               <Typography component="span" variant="body2" color="text.secondary">
-                {' '}{t('campaign raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
+                {' '}{t('campaign.form.raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
               </Typography>
             </Typography>
 
@@ -408,10 +408,10 @@ const CampaignDetail = () => {
               fullWidth
               size="large"
               onClick={handleDonateClick}
-              disabled={campaign.status !== 'approved' && campaign.status !== 'live' || !donationAmount || parseFloat(donationAmount) < 1}
+              disabled={!donationAmount || parseFloat(donationAmount) < 1}
               sx={{ mb: 2 }}
             >
-              {(campaign.status === 'approved' || campaign.status === 'live') ? t('Donate Now') : t('campaign.campaignClosed')}
+              {t('campaign.form.Donate Now')}
             </Button>
 
             <Box display="flex" justifyContent="center" gap={1}>
@@ -438,7 +438,7 @@ const CampaignDetail = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <AccessTime color={daysLeft < 7 ? 'error' : 'action'} />
                 <Typography color={daysLeft < 7 ? 'error' : 'text.secondary'}>
-                  {daysLeft} {t('daysRemaining')}
+                  {daysLeft} {t('campaign.daysRemaining')}
                 </Typography>
               </Box>
             )}

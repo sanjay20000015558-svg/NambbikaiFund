@@ -150,6 +150,9 @@
     "passwordReset": "Password reset successful!"
   },
   "campaign": {
+    "raised": "raised",
+    "donors": "donors",
+    "daysLeft": "days left",
     "start": "Start Campaign",
     "categories": {
       "leukemia": "Leukemia Treatment",
@@ -229,13 +232,11 @@
       "taxExempt": "Donations are tax-exempt under 80G",
       "noUpdates": "No updates posted yet.",
       "donorListPlaceholder": "Donor list will appear here",
-      "verified": "Verified",
-      "urgentLabel": "Urgent",
-      "thankYou": "Thank you for your donation!",
-      "minimumAmount": "Minimum donation is ₹1",
-      "redirectToRazorpay": "You will be redirected to Razorpay to complete your payment of ₹{{amount}}",
-      "proceedPrompt": "Click continue to proceed with your donation of ₹{{amount}} to {{title}}"
-    }
+      "Story": "Story",
+      "Updates": "Updates",
+      "Donors list": "Donors List"
+    },
+    "thankYou": "Thank you for your donation!"
   },
   "donation": {
     "amount": "Donation Amount (₹)",
@@ -286,7 +287,9 @@
     "campaignUpdateFailed": "Failed to update campaign",
     "terms": "Terms",
     "and": "and",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "urgent": "Urgent",
+    "verified": "Verified"
   },
   "dashboard": {
     "welcome": "Welcome",
@@ -411,6 +414,7 @@
     "goToDashboard": "Go to Dashboard",
     "tryAgain": "Try Again",
     "invalidPaymentRequest": "Invalid payment request",
+    "verificationFailed": "Payment verification failed",
     "thankYouDonation": "Thank you for your generous donation!"
   },
   "campaignList": {
@@ -432,5 +436,6 @@
     "title": "404",
     "pageNotFound": "Page Not Found",
     "pageNotFoundDesc": "The page you're looking for doesn't exist or has been moved."
-  }
+  },
+  "campaignNotFound": "Campaign not found"
 }
