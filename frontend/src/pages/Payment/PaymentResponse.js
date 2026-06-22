@@ -6,7 +6,9 @@ import {
   Paper,
   Button,
   CircularProgress,
-  Alert
+  Alert,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -18,12 +20,14 @@ import { addDonation } from '../../redux/slices/donationSlice';
 import { showSnackbar } from '../../redux/slices/uiSlice';
 
 const PaymentResponse = () => {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+   const [searchParams] = useSearchParams();
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
+   const theme = useTheme();
+   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [status, setStatus] = useState('processing'); // processing, success, failed
-  const [message, setMessage] = useState('');
+   const [status, setStatus] = useState('processing'); // processing, success, failed
+   const [message, setMessage] = useState('');
 
   const orderId = searchParams.get('order_id');
   const paymentId = searchParams.get('payment_id');
@@ -56,61 +60,63 @@ const PaymentResponse = () => {
     }
   };
 
-  return (
-    <Container maxWidth="sm" sx={{ py: 8 }}>
-      <Paper sx={{ p: 6, textAlign: 'center' }}>
-        {status === 'processing' && (
-          <>
-            <CircularProgress size={60} sx={{ mb: 3 }} />
-            <Typography variant="h5" gutterBottom>
-              Processing Your Payment...
-            </Typography>
-            <Typography color="text.secondary">
-              Please wait while we confirm your donation.
-            </Typography>
-          </>
-        )}
+return (
+     <Container maxWidth="sm" sx={{ py: { xs: 4, md: 8 } }}>
+       <Paper sx={{ p: { xs: 3, md: 6 }, textAlign: 'center' }}>
+         {status === 'processing' && (
+           <>
+             <CircularProgress size={60} sx={{ mb: 3, width: { xs: 48, md: 60 } }} />
+             <Typography variant="h5" gutterBottom sx={{ fontSize: { xs: '1.25rem', md: '1.5rem' } }}>
+               Processing Your Payment...
+             </Typography>
+             <Typography color="text.secondary" sx={{ fontSize: { xs: '0.9rem', md: '1rem' } }}>
+               Please wait while we confirm your donation.
+             </Typography>
+           </>
+         )}
 
-        {status === 'success' && (
-          <>
-            <CheckCircleIcon sx={{ fontSize: 80, color: 'success.main', mb: 2 }} />
-            <Typography variant="h4" color="success.main" gutterBottom>
-              Payment Successful!
-            </Typography>
-            <Typography variant="body1" paragraph>
-              {message}
-            </Typography>
-            <Button
-              variant="contained"
-              onClick={() => navigate('/dashboard')}
-              sx={{ mt: 2 }}
-            >
-              Go to Dashboard
-            </Button>
-          </>
-        )}
+         {status === 'success' && (
+           <>
+             <CheckCircleIcon sx={{ fontSize: { xs: 60, md: 80 }, color: 'success.main', mb: 2 }} />
+             <Typography variant="h4" color="success.main" gutterBottom sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
+               Payment Successful!
+             </Typography>
+             <Typography variant="body1" paragraph sx={{ fontSize: { xs: '0.95rem', md: '1rem' } }}>
+               {message}
+             </Typography>
+             <Button
+               variant="contained"
+               onClick={() => navigate('/dashboard')}
+               sx={{ mt: 2 }}
+               fullWidth={ isMobile }
+             >
+               Go to Dashboard
+             </Button>
+           </>
+         )}
 
-        {status === 'failed' && (
-          <>
-            <ErrorIcon sx={{ fontSize: 80, color: 'error.main', mb: 2 }} />
-            <Typography variant="h4" color="error.main" gutterBottom>
-              Payment Failed
-            </Typography>
-            <Typography variant="body1" paragraph>
-              {message}
-            </Typography>
-            <Button
-              variant="outlined"
-              onClick={() => navigate(-1)}
-              sx={{ mt: 2 }}
-            >
-              Try Again
-            </Button>
-          </>
-        )}
-      </Paper>
-    </Container>
-  );
+         {status === 'failed' && (
+           <>
+             <ErrorIcon sx={{ fontSize: { xs: 60, md: 80 }, color: 'error.main', mb: 2 }} />
+             <Typography variant="h4" color="error.main" gutterBottom sx={{ fontSize: { xs: '1.5rem', md: '2rem' } }}>
+               Payment Failed
+             </Typography>
+             <Typography variant="body1" paragraph sx={{ fontSize: { xs: '0.95rem', md: '1rem' } }}>
+               {message}
+             </Typography>
+             <Button
+               variant="outlined"
+               onClick={() => navigate(-1)}
+               sx={{ mt: 2 }}
+               fullWidth={ isMobile }
+             >
+               Try Again
+             </Button>
+           </>
+         )}
+       </Paper>
+     </Container>
+   );
 };
 
 export default PaymentResponse;

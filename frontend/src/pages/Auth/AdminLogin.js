@@ -98,8 +98,8 @@ const AdminLogin = () => {
       <Box sx={{ textAlign: 'center', mb: 5 }}>
         <Box
           sx={{
-            width: 64,
-            height: 64,
+            width: { xs: 56, md: 64 },
+            height: { xs: 56, md: 64 },
             borderRadius: '50%',
             background: 'linear-gradient(135deg, #2F7C7B 0%, #7FC6CC 100%)',
             display: 'flex',
@@ -110,12 +110,12 @@ const AdminLogin = () => {
             boxShadow: '0 8px 28px rgba(47, 124, 123, 0.25)',
           }}
         >
-          <AdminPanelSettings sx={{ color: 'white', fontSize: 32 }} />
+          <AdminPanelSettings sx={{ color: 'white', fontSize: { xs: 28, md: 32 } }} />
         </Box>
-        <Typography variant="h3" sx={{ fontWeight: 800, mb: 1.5 }}>
+        <Typography variant="h3" sx={{ fontWeight: 800, mb: 1.5, fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' } }}>
           {t('auth.adminLogin')}
         </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 400, mx: 'auto', lineHeight: 1.6 }}>
+        <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 400, mx: 'auto', lineHeight: 1.6, fontSize: { xs: '0.9rem', md: '1rem' } }}>
           {t('auth.adminLoginSubtitle')}
         </Typography>
       </Box>

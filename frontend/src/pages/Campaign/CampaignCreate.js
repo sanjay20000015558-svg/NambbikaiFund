@@ -33,7 +33,9 @@ import {
   InputLabel,
   Select,
   Switch,
-  CircularProgress
+  CircularProgress,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -56,17 +58,17 @@ import LoadingSpinner from '../../components/Common/LoadingSpinner';
 const steps = ['campaign basicInfo', 'campaign Details', 'campaign Images', 'campaign supporting Documents', 'campaign review'];
 
 const CampaignCreate = () => {
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+   const { t } = useTranslation();
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
+   const theme = useTheme();
+   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [activeStep, setActiveStep] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [uploadedImages, setUploadedImages] = useState([]);
-  const [uploadedDocuments, setUploadedDocuments] = useState([]);
-  const [coverImage, setCoverImage] = useState(null);
+   const [activeStep, setActiveStep] = useState(0);
+   const [loading, setLoading] = useState(false);
+   const [uploadedImages, setUploadedImages] = useState([]);
+   const [uploadedDocuments, setUploadedDocuments] = useState([]);
+   const [coverImage, setCoverImage] = useState(null);
 
   const defaultFormValues = {
     title: '',

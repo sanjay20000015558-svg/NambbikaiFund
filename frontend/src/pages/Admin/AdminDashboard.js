@@ -257,19 +257,21 @@ return (
         </Grid>
       )}
 
-      {/* Tabs */}
-      <Paper sx={{ mb: 4 }}>
-        <Tabs
-          value={activeTab}
-          onChange={(e, v) => setActiveTab(v)}
-          indicatorColor="primary"
-          textColor="primary"
-        >
-          {tabItems.map((tab, idx) => (
-            <Tab key={idx} icon={tab.icon} label={tab.label} />
-          ))}
-        </Tabs>
-      </Paper>
+{/* Tabs */}
+       <Paper sx={{ mb: 4, overflow: 'hidden' }}>
+         <Tabs
+           value={activeTab}
+           onChange={(e, v) => setActiveTab(v)}
+           indicatorColor="primary"
+           textColor="primary"
+           variant={ isMobile ? 'scrollable' : 'fullWidth' }
+           scrollButtons={ isMobile }
+         >
+           {tabItems.map((tab, idx) => (
+             <Tab key={idx} icon={tab.icon} label={tab.label} />
+           ))}
+         </Tabs>
+       </Paper>
 
       {/* Campaign Management */}
       {activeTab === 1 && (

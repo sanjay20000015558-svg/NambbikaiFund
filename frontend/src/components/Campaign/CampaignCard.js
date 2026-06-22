@@ -11,7 +11,9 @@ import {
   Avatar,
   IconButton,
   Tooltip,
-  Skeleton
+  Skeleton,
+  useTheme,
+  useMediaQuery
 } from '@mui/material';
 import {
   Share,
@@ -28,7 +30,9 @@ import { Link as ShareLink } from 'react-share';
 import { formatCurrency, calculatePercentage } from '../../utils/formatCurrency';
 
 const CampaignCard = ({ campaign, loading = false }) => {
-  const navigate = useNavigate();
+   const theme = useTheme();
+   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+   const navigate = useNavigate();
 
   if (loading || !campaign) {
     return (
@@ -94,102 +98,102 @@ const CampaignCard = ({ campaign, loading = false }) => {
       onClick={() => navigate(`/campaign/${campaign._id}`)}
     >
       {/* Image with overlay badge */}
-      <Box sx={{ position: 'relative', height: 220, overflow: 'hidden' }}>
-        {campaign.coverImage?.url ? (
-          <CardMedia
-            component="img"
-            image={campaign.coverImage.url}
-            alt={campaign.title}
-            sx={{
-              height: '100%',
-              transition: 'transform 0.5s ease',
-              objectFit: 'cover',
-              '&:hover': {
-                transform: 'scale(1.05)',
-              },
-            }}
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.parentElement.style.background = 'linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%)';
-            }}
-          />
-        ) : (
-          <Box
-            sx={{
-              height: '100%',
-              background: 'linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Favorite sx={{ fontSize: 64, color: 'rgba(37, 99, 235, 0.1)' }} />
-          </Box>
-        )}
+<Box sx={{ position: 'relative', height: { xs: 180, sm: 220 }, overflow: 'hidden' }}>
+         {campaign.coverImage?.url ? (
+           <CardMedia
+             component="img"
+             image={campaign.coverImage.url}
+             alt={campaign.title}
+             sx={{
+               height: '100%',
+               transition: 'transform 0.5s ease',
+               objectFit: 'cover',
+               '&:hover': {
+                 transform: { xs: 'none', sm: 'scale(1.05)' },
+               },
+             }}
+             onError={(e) => {
+               e.target.style.display = 'none';
+               e.target.parentElement.style.background = 'linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%)';
+             }}
+           />
+         ) : (
+           <Box
+             sx={{
+               height: '100%',
+               background: 'linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%)',
+               display: 'flex',
+               alignItems: 'center',
+               justifyContent: 'center',
+             }}
+           >
+             <Favorite sx={{ fontSize: { xs: 48, sm: 64 }, color: 'rgba(37, 99, 235, 0.1)' }} />
+           </Box>
+         )}
 
-        {/* Category chip */}
-        <Chip
-          label={campaign.category || 'Medical'}
-          size="small"
-          sx={{
-            position: 'absolute',
-            top: 12,
-            left: 12,
-            bgcolor: 'rgba(255,255,255,0.95)',
-            fontWeight: 700,
-            fontSize: '0.75rem',
-            letterSpacing: '0.03em',
-            textTransform: 'capitalize',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            '&:hover': {
-              bgcolor: 'white',
-            },
-          }}
-        />
+         {/* Category chip */}
+         <Chip
+           label={campaign.category || 'Medical'}
+           size="small"
+           sx={{
+             position: 'absolute',
+             top: { xs: 8, sm: 12 },
+             left: { xs: 8, sm: 12 },
+             bgcolor: 'rgba(255,255,255,0.95)',
+             fontWeight: 700,
+             fontSize: { xs: '0.7rem', sm: '0.75rem' },
+             letterSpacing: '0.03em',
+             textTransform: 'capitalize',
+             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+             '&:hover': {
+               bgcolor: 'white',
+             },
+           }}
+         />
 
-        {/* Verified badge */}
-        {campaign.status === 'approved' && campaign.verifiedBy && (
-          <Tooltip title="Verified Campaign • Trusted Platform" placement="top" arrow>
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 12,
-                right: 12,
-                width: 32,
-                height: 32,
-                borderRadius: '50%',
-                bgcolor: 'success.main',
-                color: 'white',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: '0 4px 12px rgba(16, 185, 129, 0.4)',
-                border: '2px solid white',
-              }}
-            >
-              <CheckCircle sx={{ fontSize: 18 }} />
-            </Box>
-          </Tooltip>
-        )}
+         {/* Verified badge */}
+         {campaign.status === 'approved' && campaign.verifiedBy && (
+           <Tooltip title="Verified Campaign • Trusted Platform" placement="top" arrow>
+             <Box
+               sx={{
+                 position: 'absolute',
+                 top: { xs: 8, sm: 12 },
+                 right: { xs: 8, sm: 12 },
+                 width: { xs: 28, sm: 32 },
+                 height: { xs: 28, sm: 32 },
+                 borderRadius: '50%',
+                 bgcolor: 'success.main',
+                 color: 'white',
+                 display: 'flex',
+                 alignItems: 'center',
+                 justifyContent: 'center',
+                 boxShadow: '0 4px 12px rgba(16, 185, 129, 0.4)',
+                 border: '2px solid white',
+               }}
+             >
+               <CheckCircle sx={{ fontSize: { xs: 16, sm: 18 } }} />
+             </Box>
+           </Tooltip>
+         )}
 
-        {/* Urgency badge (subtle) */}
-        {isUrgent && (
-          <Chip
-            label={isCritical ? 'Urgent Support Needed' : 'Time-Sensitive'}
-            size="small"
-            sx={{
-              position: 'absolute',
-              bottom: 12,
-              left: 12,
-              bgcolor: isCritical ? 'rgba(239, 68, 68, 0.95)' : 'rgba(47, 124, 123, 0.95)',
-              color: 'white',
-              fontWeight: 700,
-              fontSize: '0.7rem',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            }}
-          />
-        )}
-      </Box>
+         {/* Urgency badge (subtle) */}
+         {isUrgent && (
+           <Chip
+             label={isCritical ? 'Urgent Support Needed' : 'Time-Sensitive'}
+             size="small"
+             sx={{
+               position: 'absolute',
+               bottom: { xs: 8, sm: 12 },
+               left: { xs: 8, sm: 12 },
+               bgcolor: isCritical ? 'rgba(239, 68, 68, 0.95)' : 'rgba(47, 124, 123, 0.95)',
+               color: 'white',
+               fontWeight: 700,
+               fontSize: { xs: '0.65rem', sm: '0.7rem' },
+               boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+             }}
+           />
+         )}
+       </Box>
 
       <CardContent sx={{ flexGrow: 1, p: 2.5 }}>
         {/* Title */}

@@ -168,11 +168,11 @@ const CampaignEdit = () => {
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h3" gutterBottom>
-        {t('campaign.edit')}
-      </Typography>
+<Typography variant="h3" gutterBottom sx={{ fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' } }}>
+         {t('campaign.edit')}
+       </Typography>
 
-      <Paper sx={{ p: { xs: 2, md: 4 } }}>
+       <Paper sx={{ p: { xs: 2, md: 4 } }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
             <Grid item xs={12}>

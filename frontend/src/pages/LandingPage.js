@@ -121,22 +121,23 @@ return (
                   }}
                 />
 
-                <Typography
-                  variant="h1"
-                  component="h1"
-                  sx={{
-                    fontSize: { xs: '2.5rem', sm: '3.25rem', md: '4rem' },
-                    fontWeight: 800,
-                    lineHeight: 1.15,
-                    mb: 3,
-                    color: '#24343A',
-                  }}
-                >
-                  {t('home.heroLine1')}
-                  <Box component="span" sx={{ display: 'block', color: '#2F7C7B' }}>
-                    {t('home.heroLine2')}
-                  </Box>
-                </Typography>
+<Typography
+                   variant="h1"
+                   component="h1"
+                   sx={{
+                     fontSize: { xs: '1.75rem', sm: '2.25rem', md: '3rem' },
+                     fontWeight: 800,
+                     lineHeight: 1.2,
+                     mb: 2,
+                     color: '#24343A',
+                     px: { xs: 1, sm: 0 },
+                   }}
+                 >
+                   {t('home.heroLine1')}
+                   <Box component="span" sx={{ display: 'block', color: '#2F7C7B' }}>
+                     {t('home.heroLine2')}
+                   </Box>
+                 </Typography>
 
                 <Typography
                   variant="h5"

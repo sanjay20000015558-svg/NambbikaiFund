@@ -238,35 +238,36 @@ return (
         </Tabs>
       </Paper>
 
-      {/* Tab content */}
-      {activeTab === 0 && (
-        <Box>
-          {myCampaigns.length === 0 ? (
-            <Paper sx={{ p: 6, textAlign: 'center' }}>
-<Typography variant="h6" gutterBottom>
-                 {t('dashboard.noCampaignsYet')}
-               </Typography>
-               <Button
+{/* Tab content */}
+       {activeTab === 0 && (
+         <Box>
+           {myCampaigns.length === 0 ? (
+             <Paper sx={{ p: { xs: 4, md: 6 }, textAlign: 'center' }}>
+ <Typography variant="h6" gutterBottom sx={{ fontSize: { xs: '1.1rem', md: '1.25rem' } }}>
+                {t('dashboard.noCampaignsYet')}
+              </Typography>
+ <Button
                  variant="contained"
                  size="large"
                  startIcon={<Add />}
                  onClick={() => navigate('/start-campaign')}
                  sx={{ mt: 2 }}
+                 fullWidth={ isMobile }
                >
                  {t('dashboard.createFirstCampaign')}
                </Button>
-            </Paper>
-          ) : (
-            <Grid container spacing={4}>
-              {myCampaigns.map((campaign, idx) => (
-                <Grid item xs={12} sm={6} md={4} key={idx}>
-                  <CampaignCard campaign={campaign} />
-                </Grid>
-              ))}
-            </Grid>
-          )}
-        </Box>
-      )}
+             </Paper>
+           ) : (
+             <Grid container spacing={{ xs: 2, md: 4 }}>
+               {myCampaigns.map((campaign, idx) => (
+                 <Grid item xs={12} sm={6} md={4} key={idx}>
+                   <CampaignCard campaign={campaign} />
+                 </Grid>
+               ))}
+             </Grid>
+           )}
+         </Box>
+       )}
 
       {activeTab === 1 && (
         <Paper sx={{ p: 3, textAlign: 'center' }}>

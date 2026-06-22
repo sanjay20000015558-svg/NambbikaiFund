@@ -112,22 +112,22 @@ const UserProfile = () => {
     return <LoadingSpinner />;
   }
 
-  return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h3" gutterBottom>
-        {t('profile.myProfile')}
-      </Typography>
+return (
+     <Container maxWidth="md" sx={{ py: { xs: 2, md: 4 } }}>
+       <Typography variant="h3" gutterBottom sx={{ fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' } }}>
+         {t('profile.myProfile')}
+       </Typography>
 
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={4}>
-          <Paper sx={{ p: 3, textAlign: 'center' }}>
-            <Box position="relative" display="inline-block">
-              <Avatar
-                src={user.profilePicture || ''}
-                sx={{ width: 150, height: 150, mx: 'auto', mb: 2 }}
-              >
-                {user.fullName ? user.fullName[0] : '?'}
-              </Avatar>
+       <Grid container spacing={{ xs: 2, md: 4 }}>
+         <Grid item xs={12} md={4}>
+           <Paper sx={{ p: { xs: 2, md: 3 }, textAlign: 'center' }}>
+             <Box position="relative" display="inline-block">
+               <Avatar
+                 src={user.profilePicture || ''}
+                 sx={{ width: { xs: 100, md: 150 }, height: { xs: 100, md: 150 }, mx: 'auto', mb: 2 }}
+               >
+                 {user.fullName ? user.fullName[0] : '?'}
+               </Avatar>
               <input
                 accept="image/*"
                 type="file"

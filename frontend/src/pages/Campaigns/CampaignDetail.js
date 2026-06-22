@@ -20,7 +20,9 @@ import {
   Alert,
   Skeleton,
   Stack,
-  TextField
+  TextField,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import {
   Favorite,
@@ -45,12 +47,14 @@ import LoadingSpinner from '../../components/Common/LoadingSpinner';
 import { useLoading } from '../../contexts/LoadingContext';
 
 const CampaignDetail = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+   const { t } = useTranslation();
+   const { id } = useParams();
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
+   const theme = useTheme();
+   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const [campaign, setCampaign] = useState(null);
+   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [donationAmount, setDonationAmount] = useState('');
@@ -225,9 +229,9 @@ const CampaignDetail = () => {
           {/* Title and stats */}
           <Box sx={{ mb: 4 }}>
             <Box display="flex" alignItems="flex-start" gap={2} mb={2}>
-              <Typography variant="h3" component="h1" sx={{ flexGrow: 1 }}>
-                {campaign.title}
-              </Typography>
+<Typography variant="h3" component="h1" sx={{ flexGrow: 1, fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' } }}>
+                 {campaign.title}
+               </Typography>
               {campaign.status === 'live' && campaign.verifiedBy && (
                 <Chip icon={<CheckCircle />} label={t('common.verified')} color="success" />
               )}
