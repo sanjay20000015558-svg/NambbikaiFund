@@ -542,8 +542,8 @@ return (
               </Typography>
             </Box>
 
-            <Grid container spacing={3}>
-              {[
+<Grid container spacing={{ xs: 2, md: 3 }}>
+               {[
                 {
                   amount: '₹500',
                   impact: t('home.impact500'),
@@ -572,7 +572,7 @@ return (
                     transition={{ duration: 0.4, delay: idx * 0.1 }}
                     viewport={{ once: true }}
                   >
-                    <Card
+<Card
                       sx={{
                         textAlign: 'center',
                         p: 3,
@@ -580,6 +580,10 @@ return (
                         border: '1px solid rgba(36, 52, 58, 0.08)',
                         bgcolor: '#ffffff',
                         transition: 'all 0.3s ease',
+                        minHeight: { xs: 130, sm: 150 },
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
                         '&:hover': {
                           transform: 'translateY(-4px)',
                           boxShadow: '0 8px 24px rgba(36, 52, 58, 0.1)',
@@ -587,20 +591,24 @@ return (
                         },
                       }}
                     >
-                      <Box sx={{ fontSize: 40, mb: 2 }}>{item.icon}</Box>
+                      <Box sx={{ fontSize: { xs: 32, sm: 40 }, mb: 2, height: { xs: 36, sm: 44 }, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{item.icon}</Box>
                       <Typography
                         variant="h4"
                         sx={{
                           fontWeight: 800,
                           color: '#2F7C7B',
                           mb: 1,
+                          fontSize: { xs: '1.25rem', sm: '1.5rem', md: '1.75rem' },
+                          lineHeight: 1.3,
                         }}
                       >
                         {item.amount}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {item.impact}
-                      </Typography>
+                      <Box sx={{ minHeight: { xs: 44, sm: 52 }, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.4, px: 1 }}>
+                          {item.impact}
+                        </Typography>
+                      </Box>
                     </Card>
                   </motion.div>
                 </Grid>

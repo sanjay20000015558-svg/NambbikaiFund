@@ -65,4 +65,20 @@
   .chatbot-window {
     border-radius: 0;
   }
+
+  .chatbot-window .MuiPaper-root {
+    border-radius: 12px 12px 0 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .markdown-content {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .markdown-content pre {
+    padding: 8px;
+    font-size: 0.85rem;
+  }
 }

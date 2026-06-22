@@ -33,16 +33,12 @@ import {
   InputLabel,
   Select,
   Switch,
-  CircularProgress,
-  useMediaQuery,
-  useTheme
+  CircularProgress
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { useTheme } from '@mui/material/styles';
-import { useMediaQuery } from '@mui/material';
 import {
   Add as AddIcon,
   Delete as DeleteIcon,
@@ -54,6 +50,8 @@ import { campaignAPI } from '../../services/campaignService';
 import { showSnackbar } from '../../redux/slices/uiSlice';
 import { useDispatch } from 'react-redux';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 
 const steps = ['campaign basicInfo', 'campaign Details', 'campaign Images', 'campaign supporting Documents', 'campaign review'];
 

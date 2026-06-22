@@ -11,7 +11,9 @@ import {
   IconButton,
   Divider,
   CircularProgress,
-  MenuItem
+  MenuItem,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,9 +26,11 @@ import { showSnackbar } from '../../redux/slices/uiSlice';
 import LoadingSpinner from '../../components/Common/LoadingSpinner';
 
 const UserProfile = () => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+   const { t } = useTranslation();
+   const dispatch = useDispatch();
+   const theme = useTheme();
+   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+   const { user } = useSelector((state) => state.auth);
 
   const [loading, setLoading] = useState(false);
 
