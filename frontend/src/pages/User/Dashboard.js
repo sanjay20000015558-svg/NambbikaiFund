@@ -36,6 +36,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 import CountUp from 'react-countup';
 
 import { campaignAPI } from '../../services/campaignService';
@@ -48,6 +50,8 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { user } = useSelector((state) => state.auth);
   const { campaigns } = useSelector((state) => state.campaigns);
@@ -112,26 +116,29 @@ const Dashboard = () => {
     show: { opacity: 1, y: 0 }
   };
 
-  return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
-        <Box>
-<Typography variant="h3" gutterBottom>
-             {t('dashboard.welcome')}, {user?.fullName?.split(' ')[0]}
-           </Typography>
-           <Typography variant="body1" color="text.secondary">
-             {t('dashboard.manageCampaigns')}
-           </Typography>
+return (
+     <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
+       <Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} mb={4} gap={2}>
+ <Typography variant="h3" gutterBottom sx={{ fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' } }}>
+               {t('dashboard.welcome')}, {user?.fullName?.split(' ')[0]}
+             </Typography>
+ <Box>
+ <Typography variant="body1" color="text.secondary">
+               {t('dashboard.manageCampaigns')}
+             </Typography>
+           </Box>
+ <Box mt={{ xs: 2, sm: 0 }}>
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<Add />}
+              onClick={() => navigate('/start-campaign')}
+              fullWidth={ isMobile }
+            >
+              {t('dashboard.newCampaign')}
+            </Button>
+          </Box>
         </Box>
-<Button
-           variant="contained"
-           size="large"
-           startIcon={<Add />}
-           onClick={() => navigate('/start-campaign')}
-         >
-           {t('dashboard.newCampaign')}
-         </Button>
-      </Box>
 
       {/* Stats cards */}
       <Grid container spacing={3} sx={{ mb: 6 }}>

@@ -240,25 +240,25 @@ const CampaignDetail = () => {
               )}
             </Stack>
 
-            <Box display="flex" gap={4}>
+<Box display="flex" flexDirection={{ xs: 'column', sm: 'row' }} gap={{ xs: 2, sm: 4 }} mb={{ xs: 3, md: 4 }}>
               <Box>
                 <Typography variant="h4" color="primary">
                   ₹<CountUp end={campaign.amountRaised} separator="," duration={1.5} />
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-{t('campaign.form.raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
+ {t('raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
                 </Typography>
               </Box>
               <Box>
                 <Typography variant="h4">{campaign.donorsCount}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('campaign.form.donors')}
+                  {t('donors')}
                 </Typography>
               </Box>
               <Box>
                 <Typography variant="h4">{daysLeft}</Typography>
                 <Typography variant="body2" color="text.secondary">
-                  {t('campaign.form.daysLeft')}
+                  {t('daysLeft')}
                 </Typography>
               </Box>
             </Box>
@@ -370,19 +370,19 @@ const CampaignDetail = () => {
           </Paper>
         </Grid>
 
-        {/* Donation Sidebar */}
-        <Grid item xs={12} md={4}>
-          <Paper
-            sx={{
-              p: 3,
-              position: 'sticky',
-              top: 100
-            }}
-          >
+{/* Donation Sidebar */}
+         <Grid item xs={12} md={12} lg={4}>
+           <Paper
+             sx={{
+               p: { xs: 2, md: 3 },
+               position: { md: 'sticky' },
+               top: 100,
+             }}
+           >
             <Typography variant="h5" color="primary" gutterBottom>
               ₹{campaign.amountRaised.toLocaleString('en-IN')}
               <Typography component="span" variant="body2" color="text.secondary">
-                {' '}{t('campaign.form.raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
+                {' '}{t('raised')} of ₹{campaign.targetAmount.toLocaleString('en-IN')}
               </Typography>
             </Typography>
 

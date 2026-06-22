@@ -59,45 +59,48 @@ const LandingPage = () => {
   }
 
 return (
-    <>
-      {/* HERO SECTION - Emotional storytelling */}
-      <Box
-        sx={{
-          minHeight: { xs: '90vh', md: '100vh' },
-          display: 'flex',
-          alignItems: 'center',
-          background: 'linear-gradient(135deg, #EAF7F8 0%, #ffffff 50%, #EAF7F8 100%)',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Organic blobs */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '10%',
-            left: '5%',
-            width: 500,
-            height: 500,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 70%)',
-            filter: 'blur(60px)',
-            zIndex: 0,
-          }}
-        />
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: '20%',
-            right: '10%',
-            width: 600,
-            height: 600,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(13, 148, 136, 0.08) 0%, transparent 70%)',
-            filter: 'blur(80px)',
-            zIndex: 0,
-          }}
-        />
+     <>
+       {/* HERO SECTION - Emotional storytelling */}
+       <Box
+         sx={{
+           minHeight: { xs: 'auto', md: '90vh' },
+           display: 'flex',
+           alignItems: 'center',
+           background: 'linear-gradient(135deg, #EAF7F8 0%, #ffffff 50%, #EAF7F8 100%)',
+           position: 'relative',
+           overflow: 'hidden',
+           py: { xs: 6, md: 0 },
+         }}
+       >
+{/* Organic blobs */}
+         <Box
+           sx={{
+             position: 'absolute',
+             top: { xs: '5%', md: '10%' },
+             left: { xs: '2%', md: '5%' },
+             width: { xs: 200, md: 500 },
+             height: { xs: 200, md: 500 },
+             borderRadius: '50%',
+             background: 'radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 70%)',
+             filter: 'blur(40px)',
+             zIndex: 0,
+             display: { xs: 'none', sm: 'block' },
+           }}
+         />
+         <Box
+           sx={{
+             position: 'absolute',
+             bottom: { xs: '10%', md: '20%' },
+             right: { xs: '2%', md: '10%' },
+             width: { xs: 250, md: 600 },
+             height: { xs: 250, md: 600 },
+             borderRadius: '50%',
+             background: 'radial-gradient(circle, rgba(13, 148, 136, 0.08) 0%, transparent 70%)',
+             filter: 'blur(50px)',
+             zIndex: 0,
+             display: { xs: 'none', sm: 'block' },
+           }}
+         />
 
         <Container maxWidth="xl" sx={{ position: 'relative', zIndex: 2 }}>
           <Grid container spacing={6} alignItems="center">

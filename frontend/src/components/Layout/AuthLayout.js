@@ -48,32 +48,32 @@ const AuthLayout = ({ children }) => {
       }}
     >
       {/* Warm gradient decorative blobs */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '5%',
-          left: '8%',
-          width: 400,
-          height: 400,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%)',
-          filter: 'blur(60px)',
-          zIndex: 0,
-        }}
-      />
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: '15%',
-          right: '12%',
-          width: 500,
-          height: 500,
-          borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(13, 148, 136, 0.1) 0%, transparent 70%)',
-          filter: 'blur(70px)',
-          zIndex: 0,
-        }}
-      />
+<Box
+         sx={{
+           position: 'absolute',
+           top: { xs: '2%', sm: '5%' },
+           left: { xs: '4%', sm: '8%' },
+           width: { xs: 150, sm: 200, md: 400 },
+           height: { xs: 150, sm: 200, md: 400 },
+           borderRadius: '50%',
+           background: 'radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%)',
+           filter: 'blur(30px)',
+           zIndex: 0,
+         }}
+       />
+       <Box
+         sx={{
+           position: 'absolute',
+           bottom: { xs: '5%', sm: '15%' },
+           right: { xs: '4%', sm: '12%' },
+           width: { xs: 200, sm: 300, md: 500 },
+           height: { xs: 200, sm: 300, md: 500 },
+           borderRadius: '50%',
+           background: 'radial-gradient(circle, rgba(13, 148, 136, 0.1) 0%, transparent 70%)',
+           filter: 'blur(50px)',
+           zIndex: 0,
+         }}
+       />
 
       {/* Top-right language selector */}
       <Box sx={{ position: 'absolute', top: { xs: 20, md: 32 }, right: { xs: 20, md: 32 }, zIndex: 100 }}>

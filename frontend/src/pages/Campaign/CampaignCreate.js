@@ -39,6 +39,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 import {
   Add as AddIcon,
   Delete as DeleteIcon,
@@ -57,6 +59,8 @@ const CampaignCreate = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const [activeStep, setActiveStep] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -672,9 +676,9 @@ const CampaignCreate = () => {
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
-      <Typography variant="h3" gutterBottom align="center">
-        {t('Start')}
-      </Typography>
+<Typography variant="h3" gutterBottom align="center" sx={{ fontSize: { xs: '1.75rem', sm: '2.25rem', md: '2rem' } }}>
+         {t('Start')}
+       </Typography>
 
       <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
         {steps.map((label, idx) => (
@@ -687,27 +691,28 @@ const CampaignCreate = () => {
       <Paper sx={{ p: { xs: 2, md: 4 } }}>
         {renderStepContent(activeStep)}
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
-          <Button disabled={activeStep === 0} onClick={handleBack}>
-            {t('Back')}
-          </Button>
-          <Box>
-            {activeStep === steps.length - 1 ? (
-              <Button
-                variant="contained"
-                onClick={handleSubmit(onSubmit)}
-                disabled={loading}
-                startIcon={loading ? <CircularProgress size={20} /> : <CheckCircleIcon />}
-              >
-                {t('Submit')}
-              </Button>
-            ) : (
-              <Button variant="contained" onClick={handleNext}>
-                {t('Next')}
-              </Button>
-            )}
-          </Box>
-        </Box>
+<Box sx={{ display: 'flex', flexDirection: { xs: 'column-reverse', sm: 'row' }, justifyContent: 'space-between', mt: 4, gap: 2 }}>
+           <Button disabled={activeStep === 0} onClick={handleBack} fullWidth={ isMobile }>
+             {t('Back')}
+           </Button>
+           <Box>
+             {activeStep === steps.length - 1 ? (
+               <Button
+                 variant="contained"
+                 onClick={handleSubmit(onSubmit)}
+                 disabled={loading}
+                 startIcon={loading ? <CircularProgress size={20} /> : <CheckCircleIcon />}
+                 fullWidth={ isMobile }
+               >
+                 {t('Submit')}
+               </Button>
+             ) : (
+               <Button variant="contained" onClick={handleNext} fullWidth={ isMobile }>
+                 {t('Next')}
+               </Button>
+             )}
+           </Box>
+         </Box>
       </Paper>
     </Container>
   );

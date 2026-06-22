@@ -174,11 +174,11 @@ const fetchDashboardData = async () => {
     );
   }
 
-  return (
-    <Container maxWidth="xl" sx={{ py: 4 }}>
-      <Typography variant="h3" gutterBottom>
-        Admin Dashboard
-      </Typography>
+return (
+     <Container maxWidth="lg" sx={{ py: { xs: 2, md: 4 } }}>
+       <Typography variant="h3" gutterBottom sx={{ fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' } }}>
+         Admin Dashboard
+       </Typography>
 
       {/* Stats Overview - only for Overview tab */}
       {activeTab === 0 && stats && (
